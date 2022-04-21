@@ -7,7 +7,6 @@ const MySQLStore = require('express-mysql-session')(session);
 const Router = require('./routes/Router');
 require('dotenv').config();
 
-app.use(express.static(path.join(__dirname, 'build')));
 app.use(express.json());
 
 const db = mysql.createConnection({
@@ -43,11 +42,8 @@ app.use(session({
 
 new Router(app, db);
 
-app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'))
-});
 
-// app.listen(3000, '192.168.1.101');
-app.listen(3000);
+// app.listen(3001, '192.168.1.101');
+app.listen(3001);
 
 console.log("Testing Server ");
