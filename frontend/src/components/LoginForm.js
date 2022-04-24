@@ -54,8 +54,7 @@ class LoginForm extends React.Component {
             let result = await res.json();
 
             if(result && result.success) {
-                UserStore.isLoggedIn = true;UserStore.email = result.email;
-                UserStore.first_name = result.first_name;
+                UserStore.modifyObservable(false, true, result.first_name, result.email)
             } else if(result && result.success === false) {
                 this.resetForm();
                 alert(result.msg);
