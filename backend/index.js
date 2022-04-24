@@ -7,10 +7,20 @@ const MySQLStore = require('express-mysql-session')(session);
 const Router = require('./routes/Router');
 const bcrypt = require('bcrypt'); 
 require('dotenv').config();
+const cors=require("cors");
+const bodyparser = require("body-parser")
 
 //parse JSON using express
 app.use(express.json())
-app.use(express.urlencoded({extended: false}))
+// app.use(express.urlencoded({extended: false}))
+app.use(bodyparser.urlencoded({extended: true}))
+
+// const corsOptions ={
+//     origin:'*', 
+//     credentials:true,            //access-control-allow-credentials:true
+//     optionSuccessStatus:200,
+//  }
+ app.use(cors()) 
 
 const db = mysql.createConnection({
     host: 'localhost',
@@ -48,7 +58,7 @@ new Router(app, db);
 
 // app.listen(3001, '192.168.1.101');
 app.listen(3001, () => {
-    console.log("Server listening at port 3001");
+    console.log("Server is listening at port 3001");
 });
 
 app.get("/api/get-all-customers", (req, res) => {
