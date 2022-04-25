@@ -9,7 +9,7 @@ const AllModerators = () => {
 
     var {data, isPending, error} = useFetch('http://localhost:3001/api/get-all-moderators')
 
-    let [edit, setEdit] = useState(true);
+    let [edit, setEdit] = useState(false);
 
     const handleDelete = async (id) => {
         if(window.confirm("Are you sure you want to delete this moderator?")){
@@ -26,6 +26,7 @@ const AllModerators = () => {
             console.log(result);
             if(result && result.success) {
                 console.log("Successfully deleted");
+                window.location.reload(false);
             }
         }
     }

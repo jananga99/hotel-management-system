@@ -16,16 +16,16 @@ const CreateModerator = () => {
 
         e.preventDefault()
 
-        if (firstName.length > 10) {
+        if (firstName.length > 254) {
             setError(" Firstname cannot exceed 254 characters!")
         }
-        else if (lastName.length > 10) {
+        else if (lastName.length > 254) {
             setError(" Lastname cannot exceed 254 characters!")
         }
-        else if (email.length > 10) {
+        else if (email.length > 254) {
             setError(" Email cannot exceed 254 characters!")
         }
-        else if (password.length > 10) {
+        else if (password.length > 254) {
             setError(" Password cannot exceed 254 characters!")
         }
         else if (mobile.length > 10) {

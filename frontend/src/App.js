@@ -78,7 +78,7 @@ class App extends React.Component {
                 <Routes>
                   <Route path="/" element={<AdminDashboard />} />
                   <Route path="/admin/all-moderators" element={<AllModerators />} />
-                  <Route path="/admin/create-moderators" element={<CreateModerator />} />
+                  <Route path="/admin/create-moderator" element={<CreateModerator />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Router>

@@ -7,10 +7,10 @@ const Home = ({UserStore, doLogout}) => {
                     <a className="nav-link active" aria-current="page" href="/">Dashboard</a>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="/admin/all-customers">All Moderators</a>
+                    <a className="nav-link" href="/admin/all-moderators">All Moderators</a>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="/admin/create-customers">Create Moderator</a>
+                    <a className="nav-link" href="/admin/create-moderator">Create Moderator</a>
                 </li>
                 <li className="nav-item">
                     <div className="nav-link pe-auto" style={{cursor: "pointer"}} onClick={()=>doLogout()}>Logout</div>
