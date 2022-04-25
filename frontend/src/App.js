@@ -28,18 +28,13 @@ class App extends React.Component {
 
       let result = await res.json();
 
-      if (result && result.success) {
-        UserStore.loading = false;
-        UserStore.isLoggedIn = true;
-        UserStore.first_name = result.first_name;
-        UserStore.email = result.email;
-      } else {
-        UserStore.loading = false;
-        UserStore.isLoggedIn = false;
+      if(result && result.success) {
+        UserStore.modifyObservable(false, true, result.first_name, result.email);
+      }else {
+        UserStore.modifyObservable(false, false)
       }
-    } catch (error) {
-      UserStore.loading = false;
-      UserStore.isLoggedIn = false;
+    } catch(error) {
+      UserStore.modifyObservable(false, false)
     }
   }
 
@@ -55,11 +50,8 @@ class App extends React.Component {
 
       let result = await res.json();
 
-      if (result && result.success) {
-        UserStore.isLoggedIn = false;
-        UserStore.loading = false;
-        UserStore.email = '';
-        UserStore.first_name = '';
+      if(result && result.success) {
+        UserStore.modifyObservable(false, false)
       }
     } catch (error) {
       console.log(error);
@@ -92,6 +84,15 @@ class App extends React.Component {
             </div>
           </div>
         );
+    }else {
+      return(
+        <div className="app">
+          <div className='container'>
+            <LoginForm />
+          </div>
+        </div>
+      );
+    }
       } else {
         return (
           <div className="app">
