@@ -6,6 +6,8 @@ class Router {
         this.login(app, db);
         this.logout(app, db);
         this.isLoggedIn(app, db);
+        this.modifyModerator(app, db);
+        this.createModerator(app, db);
     }
 
     login(app , db) {
@@ -113,6 +115,69 @@ class Router {
                 res.json({
                     success: false
                 })
+            }
+        });
+    }
+
+    changeDatabase(sql, values, db) {
+        db.query(sql, values, (err, fields)=>{
+            if(err){
+                return false;
+            }else {
+                return true;
+            }
+        });
+
+    }
+
+    modifyModerator(app, db) {
+        app.post('/modifyModerator', (req, res) => {
+            if(req.session.userID) {
+                if(req.body.firstName !== ''){
+                    if(this.changeDatabase('UPDATE user set first_name=? where user_id=?', [req.body.firstName, req.body.id], db) === false){
+                        res.json({
+                            success: false,
+                        });
+                        return false;
+                    }
+                }
+                if(req.body.lastName !== '') {
+                    if(this.changeDatabase('UPDATE user set last_name=? where user_id=?', [req.body.lastName, req.body.id], db) === false){
+                        res.json({
+                            success: false,
+                        });
+                        return false;
+                    }
+                }
+                if(req.body.email !== '') {
+                    if(this.changeDatabase('UPDATE user set email=? where user_id=?', [req.body.email, req.body.id], db) === false){
+                        res.json({
+                            success: false,
+                        });
+                        return false;
+                    }
+                }
+                if(req.body.mobile !== '' || req.body.mobile >0) {
+                    if(this.changeDatabase('UPDATE user set mobile=? where user_id=?', [req.body.email, req.body.id], db) === false){
+                        res.json({
+                            success: false,
+                        });
+                        return false;
+                    }
+                }
+
+                res.json({
+                    success: true,
+                });
+                return true;
+            }
+        });
+    }
+
+    createModerator(app, db) {
+        app.post('/createModerator',(req, res)=>{
+            if(req.session.userID) {
+                
             }
         });
     }
