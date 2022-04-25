@@ -1,6 +1,6 @@
 import React from 'react';
 import './hotelCard.css';
-import 'bootstrap/dist/css/bootstrap.min.css'
+// import 'bootstrap/dist/css/bootstrap.min.css'
 
 class HotelCard extends React.Component {
     

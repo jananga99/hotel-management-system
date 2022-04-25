@@ -25,6 +25,7 @@ const AllModerators = () => {
             let result = await res.json();
             if(result && result.success) {
                 console.log("Successfully deleted");
+                window.location.reload(false);
             }
         }
     }
@@ -44,7 +45,8 @@ const AllModerators = () => {
         <table className="table table-hover">
             <thead>
                 <tr>
-                    <th>First name</th>
+                    <th>User id</th>
+                    <th>Fisrt name</th>
                     <th>Last name</th>
                     <th>Email</th>
                     <th>Mobile</th>
@@ -55,6 +57,7 @@ const AllModerators = () => {
             <tbody>
                 {data.result.map(moderator => (
                         <tr key={moderator.user_id}>
+                        <td> {moderator.user_id} </td>
                         <td> {moderator.first_name} </td>
                         <td> {moderator.last_name} </td>
                         <td> {moderator.email} </td>
