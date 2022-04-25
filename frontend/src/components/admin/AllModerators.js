@@ -1,16 +1,38 @@
 import useFetch from "../useFetch";
+import { useState } from "react";
+import EditOverlay from './EditOverlay';
+
+// import EditOverlay from "./EditOverlay";
+
 
 const AllModerators = () => {
 
     var {data, isPending, error} = useFetch('http://localhost:3001/api/get-all-moderators')
 
-    const handleDelete = () => {
-        alert("Are you sure you want to delete this moderator?")
-        
+    let [edit, setEdit] = useState(true);
+
+    const handleDelete = async (id) => {
+        if(window.confirm("Are you sure you want to delete this moderator?")){
+            let res = await fetch('/api/delete-user/'+id, {
+                method: 'DELETE',
+                headers: {
+                    "Accept":"application/json",
+                    "Content-Type": "application/json",
+                }
+            });
+            console.log(id);
+
+            let result = await res.json();
+            console.log(result);
+            if(result && result.success) {
+                console.log("Successfully deleted");
+            }
+        }
     }
 
-    const handleEdit = () => {
-        console.log("BBBBB")
+    const handleEdit = (user_id) => {
+        
+        setEdit(true);
     }
 
     return (
@@ -18,11 +40,12 @@ const AllModerators = () => {
         <h2>All moderators</h2>
         {isPending && <p> Loading...</p>}
         {error && <p>ERROR OCCURED!! : {error} </p>}
+        {edit && <EditOverlay visibility={edit} onChange={()=>setEdit(false)}/>}
         {data && 
         <table className="table table-hover">
             <thead>
                 <tr>
-                    <th>Fisrt name</th>
+                    <th>First name</th>
                     <th>Last name</th>
                     <th>Email</th>
                     <th>mobile</th>
@@ -37,12 +60,12 @@ const AllModerators = () => {
                         <td> {moderator.last_name} </td>
                         <td> {moderator.email} </td>
                         <td> {moderator.mobile} </td>
-                        <td><a href="#" className="btn btn-danger" 
-                        onClick={() =>handleDelete()}
+                        <td><a href={window.location.href} className="btn btn-danger" 
+                        onClick={() =>handleDelete(moderator.user_id)}
                         >Delete</a></td>
-                        <td><a href="#" className="btn btn-info"
-                         onClick={() => handleEdit()}
-                        >Edit</a></td>
+                        <td><button className="btn btn-info"
+                         onClick={() => handleEdit(moderator.user_id)} 
+                        >Edit</button></td>
                     </tr>
                 ))}
             </tbody>

@@ -29,7 +29,7 @@ class App extends React.Component {
       let result = await res.json();
 
       if(result && result.success) {
-        UserStore.modifyObservable(false, true, result.first_name, result.email);
+        UserStore.modifyObservable(false, true, result.first_name, result.email, result.type);
       }else {
         UserStore.modifyObservable(false, false)
       }
@@ -69,9 +69,10 @@ class App extends React.Component {
       );
     } else {
       if (UserStore.isLoggedIn) {
-        return (
-          <div className='app'>
-            <div className='container'>
+        if(UserStore.type === 0) {
+          return(
+          <div className='app row'>
+            <div className='container col-md-8'>
               <Home UserStore={UserStore} doLogout={this.doLogout} />
               <Router>
                 <Routes>
@@ -83,25 +84,26 @@ class App extends React.Component {
               </Router>
             </div>
           </div>
-        );
-    }else {
-      return(
-        <div className="app">
-          <div className='container'>
-            <LoginForm />
-          </div>
-        </div>
-      );
-    }
-      } else {
-        return (
+          );
+        }else if(UserStore.type ===  1){
+          return(
+            <div>Insert Moderator Component Here</div>
+          );
+        }else{
+          return(
+            <div>Insert Customer Component Here</div>
+          );
+        }
+
+      }else {
+        return(
           <div className="app">
             <div className='container'>
               <LoginForm />
             </div>
           </div>
         );
-      }
+    }
     }
   }
 }

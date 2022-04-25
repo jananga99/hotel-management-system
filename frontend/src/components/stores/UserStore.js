@@ -6,6 +6,7 @@ class UserStore{
     isLoggedIn=false;
     first_name='';
     email='';
+    type=-1;
 
     constructor(){
 
@@ -14,15 +15,17 @@ class UserStore{
             isLoggedIn: observable,
             first_name:observable,
             email: observable,
+            type: observable,
             modifyObservable: action,
         });
     }
 
-    modifyObservable(loading=false, isLoggedIn=false, first_name='', email='') {
+    modifyObservable(loading=false, isLoggedIn=false, first_name='', email='', type=-1) {
         this.loading = loading;
         this.isLoggedIn = isLoggedIn;
         this.first_name = first_name;
         this.email = email;
+        this.type = type;
     }
 }
 
