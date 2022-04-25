@@ -16,7 +16,7 @@ class Router {
 
             email = email.toLowerCase().trim();
 
-            if(email.length > 20 || password.length > 20){
+            if(email.length > 50 || password.length > 50){
                 res.json({
                     success: false,
                     msg: 'An error occured, please try again'
@@ -43,7 +43,8 @@ class Router {
                             res.json({
                                 success:true,
                                 first_name: data[0].first_name,
-                                email: data[0].email
+                                email: data[0].email,
+                                type:data[0].type,
                             });
                             return;
                         }else {
@@ -70,9 +71,9 @@ class Router {
             if(req.session.userID) {
 
                 req.session.destroy();
+                console.log("Session succesfully destroyed");
                 res.json({
                     success:true,
-
                 })
 
                 return true;
@@ -98,6 +99,7 @@ class Router {
                             success: true,
                             first_name: data[0].first_name,
                             email: data[0].email,
+                            type:data[0].type,
                         });
 
                         return true;
