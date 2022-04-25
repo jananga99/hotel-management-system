@@ -48,6 +48,7 @@ const AllCustomers = () => {
                     <th>Last name</th>
                     <th>Email</th>
                     <th>Mobile</th>
+                    <th>Type</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -58,7 +59,8 @@ const AllCustomers = () => {
                         <td> {customer.first_name} </td>
                         <td> {customer.last_name} </td>
                         <td> {customer.email} </td>
-                        <td> {customer.mobile} </td>
+                        <td> {customer.type} </td>
+
                         <td><a href={window.location.href} className="btn btn-danger" 
                         onClick={() =>handleDelete(customer.user_id)}
                         >Delete</a></td>

@@ -10,6 +10,7 @@ import Home from './components/Home';
 import AllModerators from './components/admin/AllModerators';
 import AllCustomers from './components/admin/AllCustomers';
 import CreateModerator from './components/admin/CreateModerator';
+import CreateCustomer from './components/admin/CreateCustomer';
 
 class App extends React.Component {
 
@@ -78,9 +79,10 @@ class App extends React.Component {
               <Router>
                 <Routes>
                   <Route path="/" element={<AdminDashboard />} />
-                  <Route path="/admin/all-customers" element={<AllModerators />} />
-                  <Route path="/admin/create-customers" element={<CreateModerator />} />
-                  <Route path='/admin/customers' element={<AllCustomers />} />
+                  <Route path="/admin/all-customers" element={<AllCustomers />} />
+                  <Route path="/admin/all-moderators" element={<AllModerators />} />
+                  <Route path="/admin/create-customer" element={<CreateCustomer />} />
+                  <Route path='/admin/create-moderator' element={<CreateModerator />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Router>

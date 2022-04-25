@@ -50,6 +50,7 @@ const AllModerators = () => {
                     <th>Last name</th>
                     <th>Email</th>
                     <th>Mobile</th>
+                    <th>Type</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -62,6 +63,7 @@ const AllModerators = () => {
                         <td> {moderator.last_name} </td>
                         <td> {moderator.email} </td>
                         <td> {moderator.mobile} </td>
+                        <td> {moderator.type} </td>
                         <td><a href={window.location.href} className="btn btn-danger" 
                         onClick={() =>handleDelete(moderator.user_id)}
                         >Delete</a></td>

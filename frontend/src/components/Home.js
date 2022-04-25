@@ -9,8 +9,9 @@ class Home extends React.Component {
             dashboard:'',
             allModerators: '',
             createModerator: '',
-            allCustomer:'',
-            logout: '',
+            createCustomer: '',
+            allCustomers:'',
+            logout: ''
         }
     }
 
@@ -25,15 +26,19 @@ class Home extends React.Component {
             });
         }else if(this.props.url === 'http://localhost:3000/admin/all-customers') {
             this.setState({
+                allCustomers: 'active',
+            });
+        }else if(this.props.url === 'http://localhost:3000/admin/create-customer') {
+            this.setState({
+                createCustomer: 'active',
+            });
+        }else if(this.props.url === 'http://localhost:3000/admin/all-moderators'){
+            this.setState({
                 allModerators: 'active',
             });
-        }else if(this.props.url === 'http://localhost:3000/admin/create-customers') {
+        }else if(this.props.url === 'http://localhost:3000/admin/create-moderator'){
             this.setState({
                 createModerator: 'active',
-            });
-        }else if(this.props.url === 'http://localhost:3000/admin/customers'){
-            this.setState({
-                allCustomer: 'active',
             });
         }
     }
@@ -41,10 +46,12 @@ class Home extends React.Component {
     resetSelector(property, value) {
         value = value.trim();
         this.setState({
-            dashboard: '',
+            dashboard:'',
             allModerators: '',
             createModerator: '',
-            logout: '',
+            createCustomer: '',
+            allCustomers:'',
+            logout: ''
         });
         this.setState({
             [property]: value,
@@ -59,13 +66,16 @@ class Home extends React.Component {
                         <a className={"nav-link"+ " " + this.state.dashboard} aria-current="page" href="/">Dashboard</a>
                     </li>
                     <li className="nav-item" onClick={()=>this.resetSelector('allModerators', 'active')}>
-                        <a className={"nav-link"+" "+this.state.allModerators} href="/admin/all-customers">All Moderators</a>
+                        <a className={"nav-link"+" "+this.state.allModerators} href="/admin/all-moderators">All Moderators</a>
                     </li>
                     <li className="nav-item" onClick={()=>this.resetSelector('createModerator', 'active')}>
-                        <a className={"nav-link"+" "+this.state.createModerator} href="/admin/create-customers">Create Moderator</a>
+                        <a className={"nav-link"+" "+this.state.createModerator} href="/admin/create-moderator">Create Moderator</a>
                     </li>
-                    <li className="nav-item" onClick={()=>this.resetSelector('allCustomer', 'active')}>
-                        <a className={"nav-link"+" "+this.state.createModerator} href="/admin/customers">Create Customers</a>
+                    <li className="nav-item" onClick={()=>this.resetSelector('createCustomer', 'active')}>
+                        <a className={"nav-link"+" "+this.state.createCustomer} href="/admin/create-customer">Create Customer</a>
+                    </li>
+                    <li className="nav-item" onClick={()=>this.resetSelector('allCustomers', 'active')}>
+                        <a className={"nav-link"+" "+this.state.allCustomers} href="/admin/all-customers">All Customers</a>
                     </li>
                     <li className="nav-item" onClick={()=>this.resetSelector('logout', 'active')}>
                         <div className={"nav-link pe-auto"+ " "+ this.state.logout} style={{cursor: "pointer"}} onClick={()=>this.props.doLogout()}>Logout</div>
