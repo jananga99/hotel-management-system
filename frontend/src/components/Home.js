@@ -10,8 +10,8 @@ const Home = ({UserStore, doLogout}) => {
         />
         <ul>
             <li><a href="/"> admin dashboard </a></li>
-            <li><a href="/admin/all-customers"> All moderators </a></li>
-            <li><a href="/admin/create-customers"> Create moderator </a></li>
+            <li><a href="/admin/all-moderators"> All moderators </a></li>
+            <li><a href="/admin/create-moderators"> Create moderator </a></li>
         </ul>
         </>
     );

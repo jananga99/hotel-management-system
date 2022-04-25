@@ -120,6 +120,26 @@ app.post("/api/create-customer", (req, res) => {
     })
 })
 
+app.post("/api/create-moderator", (req, res) => {
+    const {first_name, last_name, email, password, mobile} = req.body
+    const hash = bcrypt.hashSync(password, 9)
+    const sql = "INSERT INTO user VALUES (DEFAULT, ?, ?, ?, ?, ?, 1, 1);"
+    db.query(sql, [first_name, last_name, email, hash, mobile], (err, result) => {
+        if (err) {
+            console.log("ERROR WHEN ADDING A MODERATOR: " + err)
+            res.json({
+                success: false,
+                err
+            })
+        } else {
+            res.json({
+                success: true,
+                result
+            })
+        }
+    })
+})
+
 app.get('/api/get-user-by-id/:id', (req, res) => {
     const user_id = req.params.id
     const sql = "SELECT * FROM user WHERE user_id=?"
