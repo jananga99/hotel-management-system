@@ -8,6 +8,7 @@ import AdminDashboard from "./components/admin/AdminDashboard";
 import NotFound from "./components/NotFound";
 import Home from './components/Home';
 import AllModerators from './components/admin/AllModerators';
+import AllCustomers from './components/admin/AllCustomers';
 import CreateModerator from './components/admin/CreateModerator';
 
 class App extends React.Component {
@@ -73,12 +74,13 @@ class App extends React.Component {
           return(
           <div className='app row'>
             <div className='container col-md-8'>
-              <Home UserStore={UserStore} doLogout={this.doLogout} />
+              <Home UserStore={UserStore} url={window.location.href} doLogout={this.doLogout} />
               <Router>
                 <Routes>
                   <Route path="/" element={<AdminDashboard />} />
                   <Route path="/admin/all-customers" element={<AllModerators />} />
                   <Route path="/admin/create-customers" element={<CreateModerator />} />
+                  <Route path='/admin/customers' element={<AllCustomers />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Router>

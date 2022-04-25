@@ -5,15 +5,15 @@ import EditOverlay from './EditOverlay';
 // import EditOverlay from "./EditOverlay";
 
 
-const AllModerators = () => {
+const AllCustomers = () => {
 
-    var {data, isPending, error} = useFetch('http://localhost:3001/api/get-all-moderators')
+    var {data, isPending, error} = useFetch('http://localhost:3001/api/get-all-customers')
 
     let [edit, setEdit] = useState(false);
     let [userid, setId] = useState(0);
 
     const handleDelete = async (id) => {
-        if(window.confirm("Are you sure you want to delete this moderator?")){
+        if(window.confirm("Are you sure you want to delete this customer?")){
             let res = await fetch('/api/delete-user/'+id, {
                 method: 'DELETE',
                 headers: {
@@ -36,7 +36,7 @@ const AllModerators = () => {
 
     return (
         <>
-        <h2>All moderators</h2>
+        <h2>All Customers</h2>
         {isPending && <p> Loading...</p>}
         {error && <p>ERROR OCCURED!! : {error} </p>}
         {edit && <EditOverlay visibility={true} userid={userid} onClick={()=>setEdit(false)}/>}
@@ -53,17 +53,17 @@ const AllModerators = () => {
                 </tr>
             </thead>
             <tbody>
-                {data.result.map(moderator => (
-                        <tr key={moderator.user_id}>
-                        <td> {moderator.first_name} </td>
-                        <td> {moderator.last_name} </td>
-                        <td> {moderator.email} </td>
-                        <td> {moderator.mobile} </td>
+                {data.result.map(customer => (
+                        <tr key={customer.user_id}>
+                        <td> {customer.first_name} </td>
+                        <td> {customer.last_name} </td>
+                        <td> {customer.email} </td>
+                        <td> {customer.mobile} </td>
                         <td><a href={window.location.href} className="btn btn-danger" 
-                        onClick={() =>handleDelete(moderator.user_id)}
+                        onClick={() =>handleDelete(customer.user_id)}
                         >Delete</a></td>
                         <td><button className="btn btn-info"
-                         onClick={() => handleEdit(moderator.user_id)} 
+                         onClick={() => handleEdit(customer.user_id)} 
                         >Edit</button></td>
                     </tr>
                 ))}
@@ -74,4 +74,4 @@ const AllModerators = () => {
     );
 }
  
-export default AllModerators;
+export default AllCustomers;

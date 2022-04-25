@@ -9,11 +9,42 @@ class EditOverlay extends React.Component {
         super(props);
         this.state = {
             visibility: props.visibility,
+            id: props.userid,
+            firstName: '',
+            lastName: '',
+            email: '',
+            mobile: -1,
         }
     }
 
-    setVisibility() {
-        this.setState()
+    async makeChange() {
+        if(this.state.id > 0) {
+            try{
+                let res = await fetch('/modifyModerator', {
+                    method:'POST', 
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        id: this.state.id,
+                        firstName: this.state.firstName,
+                        lastName: this.state.lastName,
+                        email: this.state.email,
+                        mobile: this.state.mobile,
+                    }),
+                })
+
+                let result = await res.json();
+                if(result && result.success) {
+                    alert("Successfully Updated")
+                }else {
+                    alert("Data didn't modify completely. Refresh and try again");
+                }
+            }catch(err){
+                console.log(err);
+            }
+        }
     }
 
     render() {
@@ -29,31 +60,43 @@ class EditOverlay extends React.Component {
                     marginTop:'5px',
                     float:'right',
                     marginBottom:'10px'
-                }} onClick={()=>this.setState({
+                }} onClick={()=>{
+                    this.setState({
                     visibility: false
-                })}>&times;</button>
+                    });
+                    this.props.onClick()
+                    }
+                }>&times;</button>
                     <form className='ml-5 mt-2' style={{
                         paddingLeft:'10px', paddingRight:'10px'
                     }}>
                         <div className='form-group mb-3'>
                             <label style={{color: "black", paddingLeft:'10px'}}htmlFor='first-name' className='mb-1'>First Name</label>
-                            <input className='form-control' id='first-name' placeholder='Fill if wanted to change'></input>
+                            <input className='form-control' id='first-name' placeholder='Fill if wanted to change' onChange={(e)=>{this.setState({
+                                firstName: e.target.value
+                            })}}></input>
                         </div>
                         <div className='form-group mb-3'>
                             <label style={{color: "black", paddingLeft:'10px'}}htmlFor='last-name' className='mb-1'>Last Name</label>
-                            <input className='form-control' id='last-name' placeholder='Fill if wanted to change'></input>
+                            <input className='form-control' id='last-name' placeholder='Fill if wanted to change' onChange={(e)=>{this.setState({
+                                lastName: e.target.value
+                            })}}></input>
                         </div>
                         <div className='form-group mb-3'>
                             <label style={{color: "black", paddingLeft:'10px'}}htmlFor='email' className='mb-1'>Email</label>
-                            <input type='email' className='form-control' id='email' placeholder='Fill if wanted to change'></input>
+                            <input type='email' className='form-control' id='email' placeholder='Fill if wanted to change' onChange={(e)=>{this.setState({
+                                email: e.target.value
+                            })}}></input>
                         </div>
                         <div className='form-group mb-3'>
                             <label style={{color: "black", paddingLeft:'10px'}}htmlFor='mobile' className='mb-1'>Mobile Number</label>
-                            <input type='email' className='form-control' id='mobile' placeholder='Fill if wanted to change'></input>
+                            <input type='tel' className='form-control' id='mobile' placeholder='Fill if wanted to change' onChange={(e)=>{this.setState({
+                                mobile: e.target.value
+                            })}}></input>
                         </div>
                     </form>
                     <div className='btn-center mb-3'>
-                        <SubmitButton className='col btn-primary ' text='Make Change'/>
+                        <SubmitButton className='col btn-primary ' text='Make Change' onClick={()=>this.makeChange()}/>
                     </div>
                 </div>
             </div>
