@@ -10,6 +10,9 @@ class Booking{
     }
 
     
+    /*
+        Inserts a new booking for userID and returns corresponding booking object.
+    */
     static createBooking(userID, price, done){
         db.insertTuple('booking', {
             userID: userID,
@@ -22,6 +25,9 @@ class Booking{
     }
 
 
+    /*
+        Updates payment_made in booking table.
+    */
     pay(done){
         db.updateTuple('booking', {
             whereObject: {bookingID:this.bookingID},

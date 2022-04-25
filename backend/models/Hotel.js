@@ -8,11 +8,18 @@ class Hotel {
         this.hotelID = hotelID
     }
 
+
+    /*
+        Returns all hotels
+    */
     static getAllHotels(dataObject, done){
         db.selectTuple('hotel', dataObject, done)
     }
 
 
+    /*
+        Returns all rooms in this hotel
+    */
     static getAllRoomsOfHotel(done){
         let dataObject = {
             whereObject: {
@@ -23,6 +30,9 @@ class Hotel {
     }
 
     
+    /*
+        Returns all data of this hotel from Hotel table.
+    */
     getHotelDetails(done){
         db.selectTuple('hotel', {whereObject:{hotelID:this.hotelID}}, (err, hotels)=>{
             if(err) return done(err)

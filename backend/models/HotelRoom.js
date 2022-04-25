@@ -12,6 +12,9 @@ class HotelRoom {
     }
 
 
+    /*
+        Returns all data of this hotel room from Room table.
+    */    
     getRoomDetails(done){
         db.selectTuple('room', {
             whereObject:{
@@ -28,6 +31,9 @@ class HotelRoom {
     }
 
 
+    /*
+        Returns 1 if room is available, 0 otherwise.
+    */
     isAvailable(done){
         db.selectTuple('room', {
             whereObject: {roomID:this.roomID},
@@ -39,6 +45,10 @@ class HotelRoom {
     }
 
 
+    /*
+        Updates available to 0 and bookingID in room table.
+        This represents room is booked. I.e. it is made to unavailable.
+    */
     setUnavailable(bookingID, done){
         db.updateTuple('room', {
             whereObject: {roomID: this.roomID},
@@ -50,6 +60,10 @@ class HotelRoom {
     }
 
 
+    /*
+        Updates available and bookingID to 0 in room table.
+        This represents room is freed. I.e. it is made to available.
+    */
     setAvailable(done){
         db.updateTuple('room', {
             whereObject: {roomID: this.roomID},
@@ -62,6 +76,11 @@ class HotelRoom {
 
 
 
+    /*
+        Books this hotel room.
+        If room is not available, 0 is returned. (to represent it is booked.)
+        Otherwise, it is booked and Booking object is returned.
+    */
     book(userID, done){
         this.isAvailable((err, available)=>{
             if(err) return done(err)
@@ -85,6 +104,9 @@ class HotelRoom {
     }
 
 
+    /*
+        Unbooks the room.
+    */
     unbook(done){
         this.setAvailable(done)
     }
