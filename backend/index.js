@@ -22,11 +22,18 @@ app.use(bodyparser.urlencoded({extended: true}))
 //  }
  app.use(cors()) 
 
+// const db = mysql.createConnection({
+//     host: process.env.DATABASE_HOST,
+//     user: process.env.DATABASE_USER,
+//     password: process.env.DATABASE_PASS,
+//     database: process.env.DATABASE_NAME,
+// });
+
 const db = mysql.createConnection({
-    host: process.env.DATABASE_HOST,
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASS,
-    database: process.env.DATABASE_NAME,
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "hotel_booking_system"
 });
 
 db.connect(function(err){
@@ -116,6 +123,26 @@ app.post("/api/create-customer", (req, res) => {
                     result
                 })
             }
+        }
+    })
+})
+
+app.post("/api/create-moderator", (req, res) => {
+    const {first_name, last_name, email, password, mobile} = req.body
+    const hash = bcrypt.hashSync(password, 9)
+    const sql = "INSERT INTO user VALUES (DEFAULT, ?, ?, ?, ?, ?, 1, 1);"
+    db.query(sql, [first_name, last_name, email, hash, mobile], (err, result) => {
+        if (err) {
+            console.log("ERROR WHEN ADDING A MODERATOR: " + err)
+            res.json({
+                success: false,
+                err
+            })
+        } else {
+            res.json({
+                success: true,
+                result
+            })
         }
     })
 })

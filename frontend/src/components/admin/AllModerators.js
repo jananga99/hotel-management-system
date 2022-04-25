@@ -9,7 +9,7 @@ const AllModerators = () => {
 
     var {data, isPending, error} = useFetch('http://localhost:3001/api/get-all-moderators')
 
-    let [edit, setEdit] = useState(true);
+    let [edit, setEdit] = useState(false);
 
     const handleDelete = async (id) => {
         if(window.confirm("Are you sure you want to delete this moderator?")){
@@ -26,6 +26,7 @@ const AllModerators = () => {
             console.log(result);
             if(result && result.success) {
                 console.log("Successfully deleted");
+                window.location.reload(false);
             }
         }
     }
@@ -45,7 +46,8 @@ const AllModerators = () => {
         <table className="table table-hover">
             <thead>
                 <tr>
-                    <th>First name</th>
+                    <th>User id</th>
+                    <th>Fisrt name</th>
                     <th>Last name</th>
                     <th>Email</th>
                     <th>mobile</th>
@@ -56,6 +58,7 @@ const AllModerators = () => {
             <tbody>
                 {data.result.map(moderator => (
                         <tr key={moderator.user_id}>
+                        <td> {moderator.user_id} </td>
                         <td> {moderator.first_name} </td>
                         <td> {moderator.last_name} </td>
                         <td> {moderator.email} </td>
