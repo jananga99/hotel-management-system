@@ -72,13 +72,10 @@ router.get("/book/:roomId",(req,res,next)=>{
         let hotel = new Hotel(roomDetails.hotelID)
         hotel.getHotelDetails((err, hotelDetails)=>{
             if(err) return next(err)
-            let retObject = {
-                hotel: hotelDetails,
-                room: roomDetails
-            }
             res.json({
                 success: true,
-                retObject
+                hotelDetails,
+                roomDetails
             })
         })
     })
@@ -94,7 +91,8 @@ router.post("/book/:id",(req,res,next)=>{
         if(err) return next(err)
         if(booking) res.json({
             success: true,
-            booking
+            booking,
+            msg: `Room is booked successfully. Booking Id is ${booking.bookingID}`
         })
         else    res.json({
             success: true,

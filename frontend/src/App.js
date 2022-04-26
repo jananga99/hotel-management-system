@@ -12,6 +12,7 @@ import AllCustomers from './components/admin/AllCustomers';
 import CreateModerator from './components/admin/CreateModerator';
 import BookingAllHotels from './components/booking/AllHotels';
 import BookingHotel from './components/booking/Hotel';
+import Booking from './components/booking/Book';
 
 class App extends React.Component {
 
@@ -103,6 +104,7 @@ class App extends React.Component {
                 <Routes>
                   <Route path='/book/hotels' element={<BookingAllHotels />} />
                   <Route path='/book/hotel/:hotelID' element={<BookingHotel />} />
+                  <Route path='/book/book/:roomID' element={<Booking />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Router>
