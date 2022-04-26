@@ -10,6 +10,8 @@ require('dotenv').config();
 const cors=require("cors");
 const bodyparser = require("body-parser")
 
+const bookingRouter = require('./routes/bookingRouter');
+
 //parse JSON using express
 app.use(express.json())
 // app.use(express.urlencoded({extended: false}))
@@ -62,6 +64,7 @@ app.use(session({
 
 new Router(app, db);
 
+app.use('/book', bookingRouter);
 
 // app.listen(3001, '192.168.1.101');
 app.listen(3001, () => {
@@ -204,6 +207,20 @@ app.delete('/api/delete-user/:id', (req, res) => {
         }
     })
 })
+
+
+// error handler
+app.use(function(err, req, res, next) {
+    /* For dev purposes only
+        res.end(err.message)
+    */
+    res.json({
+        success: false,
+        msg: 'An error occured, please try again'
+    });
+    return;
+});
+
 
 // let pswrd = bcrypt.hashSync('A123456', 9);
 // console.log(bcrypt.compareSync('a123456', pswrd));
