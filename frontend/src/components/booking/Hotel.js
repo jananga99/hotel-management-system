@@ -8,7 +8,9 @@ const Hotel = (props) => {
     if(data){
         data.rooms.forEach(room => {
             room.bookUrl = `/book/book/${room.roomID}`
-            room.available = room.available ? "Yes" : "No"
+            if(room.available==1 || room.available==0){
+                room.available = room.available==1 ? "Yes" : "No"
+            }
         });
     }
     return (
@@ -69,7 +71,7 @@ const Hotel = (props) => {
                         <tbody>
                             {data.rooms.map(room => (
                                     <tr key={room.roomID}>
-                                    <td> {room.hotelID} </td>
+                                    <td> {room.roomID} </td>
                                     <td> {room.name} </td>
                                     <td> {room.num_of_people} </td>
                                     <td> {room.ac_or_non_ac} </td>

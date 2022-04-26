@@ -21,7 +21,9 @@ router.get('/', (req,res,next)=>{
     GET Hotel Listing 
     Considers search and filter parametres if given.
     If there are no hotels according to given parametres,
-        empty list is sent.    
+        empty list is sent.   
+    Also retuns all cities, street name and street numbers.
+        (To use as options in drop down lists in filter section) 
 */
 router.get('/hotels', (req,res,next)=>{
     let dataObject = { whereObject: {}}
@@ -36,9 +38,21 @@ router.get('/hotels', (req,res,next)=>{
     if(req.query.street_name)  dataObject.whereObject.street_name = req.query.street_name
     Hotel.getAllHotels(dataObject, (err, hotels)=>{
         if(err) return next(err)
-        res.json({
-            success: true,
-            hotels
+        Hotel.getAllCity((err, cities)=>{
+            if(err) return next(err)
+            Hotel.getAllStreetName((err, streetNames)=>{
+                if(err) return next(err)
+                Hotel.getAllStreetNumber((err, streetNumbers)=>{
+                    if(err) return next(err)
+                    res.json({
+                        success: true,
+                        hotels,
+                        cities,
+                        streetNames,
+                        streetNumbers
+                    })
+                })
+            })
         })
     })
 });

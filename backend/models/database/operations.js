@@ -121,6 +121,9 @@ insertTuple = (tableName, dataObject, done)=>{
  */
 selectTuple = (tableName, dataObject, done)=>{
     let sql = "select ";
+    if( dataObject!==null  && 'distinct' in dataObject && dataObject.distinct){
+        sql = sql + "distinct ";
+    }    
     if( dataObject!==null  && 'attributeList' in dataObject && dataObject.attributeList.length>0){
         sql = sql + commaSequenceString(dataObject.attributeList);
     }else{
@@ -134,6 +137,7 @@ selectTuple = (tableName, dataObject, done)=>{
     };
     if(dataObject!==null && 'like' in dataObject && dataObject.like){
         if(where==0)    sql = sql + " where "
+        else    sql = sql + " and "
         sql = sql + dataObject.like.searchBy + ` like '%${dataObject.like.search}%' `;
     }
     if(dataObject!==null && 'orderList' in dataObject && dataObject.orderList.length>0){

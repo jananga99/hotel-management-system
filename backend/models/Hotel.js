@@ -42,6 +42,51 @@ class Hotel {
     }
 
 
+    /*
+        Returns all cities in Hotel table without duplicates.
+    */
+    static getAllCity(done){
+        db.selectTuple('hotel', {distinct:true, attributeList:['city']}, (err, result)=>{
+            if(err) return done(err)
+            let cities = []
+            result.forEach(element => {
+                cities.push(element.city)
+            });
+            done(null, cities)
+        })
+    }
+
+
+    /*
+        Returns all street names in Hotel table without duplicates.
+    */
+    static getAllStreetName(done){
+        db.selectTuple('hotel', {distinct:true, attributeList:['street_name']}, (err, result)=>{
+            if(err) return done(err)
+            let streetNames = []
+            result.forEach(element => {
+                streetNames.push(element.street_name)
+            });
+            done(null, streetNames)
+        })
+    }
+
+    
+    /*
+        Returns all street numbers in Hotel table without duplicates.
+    */
+    static getAllStreetNumber(done){
+        db.selectTuple('hotel', {distinct:true, attributeList:['street_number']}, (err, result)=>{
+            if(err) return done(err)
+            let streetNumbers = []
+            result.forEach(element => {
+                streetNumbers.push(element.street_number)
+            });
+            done(null, streetNumbers)
+        })
+    }
+
+
 }
 
 
