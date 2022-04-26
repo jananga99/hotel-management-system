@@ -20,7 +20,7 @@ class Hotel {
     /*
         Returns all rooms in this hotel
     */
-    static getAllRoomsOfHotel(done){
+    getAllRoomsOfHotel(done){
         let dataObject = {
             whereObject: {
                 hotelID: this.hotelID

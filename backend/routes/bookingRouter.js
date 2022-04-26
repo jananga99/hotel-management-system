@@ -52,9 +52,13 @@ router.get('/hotel/:id', (req,res,next)=>{
     let hotel = new Hotel(req.params.id)
     hotel.getHotelDetails((err, hotelDetails)=>{
         if(err) return next(err)
-        res.json({
-            success: true,
-            hotelDetails
+        hotel.getAllRoomsOfHotel((err, rooms)=>{
+            if(err) return next(err)
+            res.json({
+                success: true,
+                hotelDetails,
+                rooms
+            })
         })
     })
 })
