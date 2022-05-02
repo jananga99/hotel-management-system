@@ -7,7 +7,7 @@ import EditOverlay from './EditOverlay';
 
 const AllModerators = () => {
 
-    var {data, isPending, error} = useFetch('http://localhost:3001/api/get-all-moderators')
+    var {data, isPending, error} = useFetch('http://localhost:3002/api/get-all-moderators')
 
     let [edit, setEdit] = useState(false);
     let [userid, setId] = useState(0);

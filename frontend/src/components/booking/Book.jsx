@@ -1,14 +1,14 @@
 import useFetch from "../useFetch";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
+import HotelCard from "../HotelCard/hotelCard";
 
 const Hotel = () => {
     
     const [available, setAvailable] = useState()
 
     let {roomID} = useParams()
-    var {data, isPending, error} = useFetch(`http://localhost:3001/book/book/${roomID}`)
+    var {data, isPending, error} = useFetch(`http://localhost:3002/book/book/${roomID}`)
     if(data){
         data.roomDetails.ac_or_non_ac = data.roomDetails.ac_or_non_ac==="ac" ? "AC" : "Non-AC"
         if(data.roomDetails.available !== available) setAvailable(data.roomDetails.available)     
@@ -132,6 +132,16 @@ const Hotel = () => {
                     <button id="confirmBooking" className="btn btn-info" style={{display:"none"}} onClick={handleConfirmBooking}>Confirm Booking</button>
                     <p id="alreadyBooked" style={{display:"none"}} >Already Booked</p>
                 </div>
+
+
+                <div>
+                    <HotelCard />
+                </div>
+
+
+
+
+
             </div>
         }
         </>

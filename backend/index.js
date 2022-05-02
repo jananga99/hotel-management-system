@@ -66,9 +66,9 @@ new Router(app, db);
 
 app.use('/book', bookingRouter);
 
-// app.listen(3001, '192.168.1.101');
-app.listen(3001, () => {
-    console.log("Server is listening at port 3001");
+// app.listen(3002, '192.168.1.101');
+app.listen(3002, () => {
+    console.log("Server is listening at port 3002");
 });
 
 app.get("/api/get-all-customers", (req, res) => {

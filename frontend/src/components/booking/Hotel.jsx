@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 
 const Hotel = (props) => {
     let {hotelID} = useParams()
-    var {data, isPending, error} = useFetch(`http://localhost:3001/book/hotel/${hotelID}`)
+    var {data, isPending, error} = useFetch(`http://localhost:3002/book/hotel/${hotelID}`)
     if(data){
         data.rooms.forEach(room => {
             room.bookUrl = `/book/book/${room.roomID}`

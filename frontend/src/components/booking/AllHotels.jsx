@@ -1,6 +1,8 @@
 import useFetch from "../useFetch";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import './AllHotels.css';
+import SearchHotelCard from "../searchHotelCard/searchHotelCard";
 
 
 const AllHotels = () => {
@@ -9,7 +11,7 @@ const AllHotels = () => {
     const [filterCity, setFilterCity] = useState()
     const [filterStreetName, setFilterStreetName] = useState()
     const [filterStreetNumber, setFilterStreetNumber] = useState()
-    var {data, isPending, error} = useFetch('http://localhost:3001/book/hotels')
+    var {data, isPending, error} = useFetch('http://localhost:3002/book/hotels')
     const [reRender, setreRender] = useState(false)  
     if(data){
         data.hotels.forEach(hotel => {
@@ -47,12 +49,14 @@ const AllHotels = () => {
 
     return (
         <>
-        <h2>All Hotels</h2>
         {isPending && <p> Loading...</p>}
         {error && <p>ERROR OCCURED!! : {error} </p>}
         {data && 
-        <div>
-            <div className="container" style={{marginLeft:'10px'}}>
+        <div className="container">
+            <div className="row">
+                <h2>All Hotels</h2>
+            </div>
+            <div style={{marginLeft:'10px'}}>
                 <div className="row mb-3">
                     <div className="col-sm-8 col-lg-3">
                         <label for="filter" className="col-form-label">Filter</label>
@@ -84,7 +88,7 @@ const AllHotels = () => {
                 </div>
             </div>
             <div>
-                <div className="container" style={{marginLeft:'10px'}}>
+                <div style={{marginLeft:'10px'}}>
                     <div className="row mb-3">
                         <div className="col-sm-10 col-lg-7">
                             <input type="text" className="form-control" placeholer="Search by hotel name" onChange={(e)=>setSearchName(e.target.value)}/>
@@ -119,6 +123,21 @@ const AllHotels = () => {
                     </tbody>
                 </table>
             </div>
+
+            <div className="row searchCards">
+                <div className="col-md-12 col-lg-6" >
+                    <SearchHotelCard hotel={data.hotels[0]} />
+                </div>
+                <div className="col-md-12 col-lg-6">
+                    <SearchHotelCard hotel={data.hotels[1]} />
+                </div>               
+            </div>
+
+
+
+
+
+
         </div>
         }
         </>

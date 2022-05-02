@@ -1,0 +1,17 @@
+.card {
+    flex-direction: row;
+    align-items: center;
+}
+
+.card img {
+    width: 30%;
+}
+
+.card-title {
+    font-weight: bold;
+}
+
+.card img {
+    border-top-right-radius: 0;
+    border-bottom-left-radius: calc(0.25rem - 1px);
+}
