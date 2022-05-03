@@ -1,13 +1,14 @@
 import useFetch from "../useFetch";
 import { Link, useParams } from "react-router-dom";
-
+import './Hotel.css';
+import HotelCard from "../HotelCard/HotelCard";
 
 const Hotel = (props) => {
     let {hotelID} = useParams()
-    var {data, isPending, error} = useFetch(`http://localhost:3002/book/hotel/${hotelID}`)
+    var {data, isPending, error} = useFetch(`http://localhost:3001/book/hotel/${hotelID}`)
     if(data){
         data.rooms.forEach(room => {
-            room.bookUrl = `/book/book/${room.roomID}`
+            room.bookUrl = `/room/${room.roomID}`
             if(room.available==1 || room.available==0){
                 room.available = room.available==1 ? "Yes" : "No"
             }
@@ -15,73 +16,59 @@ const Hotel = (props) => {
     }
     return (
         <>
-        <h2>Hotel Details</h2>
+        
         {isPending && <p> Loading...</p>}
         {error && <p>ERROR OCCURED!! : {error} </p>}
         {data && 
-            <div>
-                <div>
-                    <div className="container" style={{marginLeft:'10px'}}>
-                        <div className="row mb-3">
-                            <label for="hotelname" className="col-sm-2 col-form-label">Hotel Name</label>
-                            <div className="col-sm-10 col-lg-7">
-                                <input type="text" className="form-control" readOnly value={data.hotelDetails.name}/>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="container" style={{marginLeft:'10px'}}>
-                        <div className="row mb-3">
-                            <label for="streetNumber" className="col-sm-2 col-form-label">Street Number</label>
-                            <div className="col-sm-10 col-lg-7">
-                                <input type="text" className="form-control" readOnly value={data.hotelDetails.street_number}/>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="container" style={{marginLeft:'10px'}}>
-                        <div className="row mb-3">
-                            <label for="streetName" className="col-sm-2 col-form-label">Street Name</label>
-                            <div className="col-sm-10 col-lg-7">
-                                <input type="text" className="form-control" readOnly value={data.hotelDetails.street_name}/>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="container" style={{marginLeft:'10px'}}>
-                        <div className="row mb-3">
-                            <label for="city" className="col-sm-2 col-form-label">City</label>
-                            <div className="col-sm-10 col-lg-7">
-                                <input type="text" className="form-control" readOnly value={data.hotelDetails.city}/>
-                            </div>
+            
+            <div className="container hotel">
+
+                <div className="row mb-5">
+                    <h2>Hotel Details</h2>
+                </div>
+                
+
+                <div className="row hotel-card mb-5">
+                    <HotelCard hotel={data.hotelDetails} />
+                </div>
+
+
+                <div className="row">
+                    <div className="col-md-12">
+                        <h4 className="text-center mb-4">Room Details</h4>
+                        <div className="table-responsive">
+                            <table className="table">
+                                <thead className="thead-dark">
+                                    <tr>
+                                        <th>Room ID</th>
+                                        <th>Room Name</th>
+                                        <th>Number of people</th>
+                                        <th>AC / Non-AC</th>
+                                        <th>Available</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {data.rooms.map(room => (
+                                    <tr key={room.roomID}>
+                                        <td> {room.roomID} </td>
+                                        <td> {room.name} </td>
+                                        <td><i className="fa fa-users"></i> {room.num_of_people} </td>
+                                        <td> {room.ac_or_non_ac} </td>
+                                        <td> {room.available} </td>
+                                        <td><Link className='btn btn-primary' to={room.bookUrl}>Book Room</Link></td>
+                                    </tr>
+                                ))}                                
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
 
-                <div>
-                    <h3>Rooms Details</h3>
-                    <table className="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Room ID</th>
-                                <th>Name</th>
-                                <th>Number of peopls can stay</th>
-                                <th>AC/Non-AC</th>
-                                <th>Available</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {data.rooms.map(room => (
-                                    <tr key={room.roomID}>
-                                    <td> {room.roomID} </td>
-                                    <td> {room.name} </td>
-                                    <td> {room.num_of_people} </td>
-                                    <td> {room.ac_or_non_ac} </td>
-                                    <td> {room.available} </td>
-                                    <td><Link to={room.bookUrl}>Book Room</Link></td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+
+
+
+
             </div>
         }
         </>
