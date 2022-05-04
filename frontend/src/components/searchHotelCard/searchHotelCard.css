@@ -1,0 +1,17 @@
+.search-hotel-card {
+    flex-direction: row;
+    align-items: center;
+}
+
+.search-hotel-card img {
+    width: 30%;
+}
+
+.search-hotel-card .card-title {
+    font-weight: bold;
+}
+
+.search-hotel-card img {
+    border-top-right-radius: 0;
+    border-bottom-left-radius: calc(0.25rem - 1px);
+}

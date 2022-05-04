@@ -3,21 +3,21 @@ const connection = require(path.resolve(__dirname, "connection.js"));
 
 
 /*
-    dataObject = {
-        name: "a",
-        description: "Oliver Queen"
-    }
-    sql = insert into tableName (name, description) values('a','jnr')
+    keys = [
+        'name',
+        'description'
+    ]
+    sql = insert into tableName (name, description) values(?,?)
 */
-insertValuesSql = (tableName, dataObject)=>{
+insertValuesSql = (tableName, keys)=>{
     let sql = "insert into " + tableName + "(";
     let s1 = "";
     let s2 = "";
     let i = 0;
-    Object.entries(dataObject).forEach(entry => {
-        s1 = s1 + " " + `${entry[0]}`;
-        s2 = s2 + " " + `'${entry[1]}'`;
-        if(i!=Object.entries(dataObject).length-1){
+    keys.forEach(key => {
+        s1 = s1 + " " + key;
+        s2 = s2 + " ?";
+        if(i!=keys.length-1){
             s1 = s1 + ",";
             s2 = s2 + ",";
         }   
@@ -49,25 +49,18 @@ commaSequenceString = (dataArray)=>{
 
 
 /*
-    dataObject = {
-        name: "a",
-        description: "Oliver Queen"
-    }
-    if(comma==true) s = "name='a', descripton='Oliver Queen'"
-    else    s = "name='a' and descripton='Oliver Queen'"
+    keys = [ name, description ]
+    if(comma==true) s = "name=?, descripton=?"
+    else    s = "name=? and descripton=?"
 */
-equalSequenceString = (dataObject, comma)=>{
+equalSequenceString = (keys, comma)=>{
     let s = "";
     let i =0;
-    Object.entries(dataObject).forEach(entry => {
-        s = s + `${entry[0]}='${entry[1]}'`;
-        if(i!=Object.entries(dataObject).length-1){
-            if(comma){
-                s = s + ", ";
-            }else{
-                s = s + " and ";
-            }
-            
+    keys.forEach(key => {
+        s = s + `${key}=?`;
+        if(i!=keys.length-1){
+            if(comma)   s = s + ", ";
+            else    s = s + " and ";
         };
         i+=1;
     });
@@ -76,9 +69,13 @@ equalSequenceString = (dataObject, comma)=>{
 
 /*
     Accepts a sql and executes it. Returns results or the error.
+    values is an array containing values for placeholders.
+        Placeholders are used to prevent sql injection.
+    sql = insert into tableName (name, description) values(?,?)
+    values = [ "Oliver Queen", "The mayor at Star City."]
 */
-executeQuery = (sql, done)=>{
-    connection.query(sql, (err,result)=>{
+executeQuery = (sql, values, done)=>{
+    connection.query(sql, values, (err,result)=>{
         if(err) return done(err);
         return done(null, result);
     });
@@ -88,18 +85,13 @@ executeQuery = (sql, done)=>{
 /*
     dataObject = {
         name: "Oliver Queen",
-        description: "Green Arrow"
+        description: "The mayor at Star City."
     }
-    result = 5 (any number  <---- insert id)  
+    sql = insert into tableName (name, description) values(?,:?)  
 */
 insertTuple = (tableName, dataObject, done)=>{
-    if(typeof(tableName)!=='string'){
-        return done(new Error("tableName in insertTuple is required and must be a string", "_helpers/databse/operatons.js"));
-    }if(typeof(dataObject)!=='object' && typeof(dataObject)!=='undefined'){
-        return done(new Error("dataObject in insertTuple must be an object.", "_helpers/databse/operatons.js"));
-    }
-    let sql = insertValuesSql(tableName, dataObject);
-    executeQuery(sql, done)
+    let sql = insertValuesSql(tableName, Object.keys(dataObject));
+    executeQuery(sql, Object.values(dataObject), done)
 };
 
 
@@ -107,15 +99,14 @@ insertTuple = (tableName, dataObject, done)=>{
     dataObject = {
         attributeList: ['name', 'description'],
         whereObject: {
-            id: 5,
-            name: 'asd'    
+            city: 'Central City,
+            name: 'Barry Allen'    
         },
-        orderList: [id, name],
+        orderList: [id, job],
         desc : true
     }
-    sql = select name, description from tableName where id='5' and name='asd' order by id, name desc
+    sql = select name, description from tableName where city=? and name=? order by id, job desc
     result = [{record1}, {record2}, {record3} ...........]             ; recordi is an object
-    records are java script lists
     NOTE: sql can be differ according to given keys and values of dataObject
     NOTE: all keys of dataObject are not compulsory for code to execute.
  */
@@ -132,7 +123,7 @@ selectTuple = (tableName, dataObject, done)=>{
     sql = sql + "from " + tableName;
     let where = 0;
     if(dataObject!==null && 'whereObject' in dataObject && Object.entries(dataObject.whereObject).length>0){
-        sql = sql + " where " + equalSequenceString(dataObject.whereObject);
+        sql = sql + " where " + equalSequenceString(Object.keys(dataObject.whereObject));
         where = 1;
     };
     if(dataObject!==null && 'like' in dataObject && dataObject.like){
@@ -146,7 +137,9 @@ selectTuple = (tableName, dataObject, done)=>{
     if(dataObject!==null && 'desc' in dataObject && dataObject.desc){
         sql = sql + " desc";
     };  
-    executeQuery(sql, (err, results)=>{
+    let values = null;
+    if(where)   values = Object.values(dataObject.whereObject)
+    executeQuery(sql, values, (err, results)=>{
         if(err) return done(err, false)
         let arr = [];
         results.forEach(element => {
@@ -161,24 +154,26 @@ selectTuple = (tableName, dataObject, done)=>{
     dataObject = {
         whereObject: {
             id: 5,
-            name: 'asd'    
+            name: 'Jason Todd'    
         },
         valueObject: {
-            id: 12,
-            name: 'jnr kbnb'    
+            name: 'Damian Wayne',
+            age: 10    
         }
     }
-    sql = update tableName set id='12', name='jnr kbnb' where id=5 and name='asd'
+    sql = update tableName set name=?, age=? where id=? and name=?
     result = object about status of update operation
     NOTE: sql can be differ according to given keys and values of dataObject
     NOTE: all keys of dataObject are not compulsory for code to execute.
  */
 updateTuple = (tableName, dataObject, done)=>{
-    let sql = "update " + tableName + " set " + equalSequenceString(dataObject.valueObject,true);
+    let sql = "update " + tableName + " set " + equalSequenceString(Object.keys(dataObject.valueObject),true);
+    let values = [ ...Object.values(dataObject.valueObject)]
     if(typeof(dataObject)==='object' && 'whereObject' in dataObject && Object.entries(dataObject.whereObject).length>0){
-        sql = sql + " where " + equalSequenceString(dataObject.whereObject);
-    };   
-    executeQuery(sql, done)
+        sql = sql + " where " + equalSequenceString(Object.keys(dataObject.whereObject));
+        values = [...values, ...Object.values(dataObject.whereObject) ]
+    }
+    executeQuery(sql, values, done)
 }
 
 
@@ -186,17 +181,17 @@ updateTuple = (tableName, dataObject, done)=>{
     dataObject = {
         whereObject: {
             id: 5,
-            name: 'asd'    
+            name: 'Lex Luthor'    
         }
     }
-    sql = delete from tableName where id=5 and name='asd'
+    sql = delete from tableName where id=? and name=?
     result = object about status of delete operation
     NOTE: sql can be differ according to given keys and values of dataObject
     NOTE: all keys of dataObject are not compulsory for code to execute.
  */
 deleteTuple = (tableName, dataObject, done)=>{
-    let sql = "delete from " + tableName + " where " +  equalSequenceString(dataObject.whereObject);
-    executeQuery(sql, done)
+    let sql = "delete from " + tableName + " where " +  equalSequenceString(Object.keys(dataObject.whereObject));
+    executeQuery(sql,Object.values(dataObject.whereObject),  done)
 }
 
 
@@ -211,28 +206,42 @@ module.exports = {
 
 
 
-// SAMPLES WITH USING CALLBACKS (CHECK PREVIOUS COMMITS FOR CALLBACK VERSION)
-/*
-let dataObject = {
-    whereObject: {
-      id: 5,
-      name: 'r'
-    }
-  };
-  dboper.insertTuple("user", dataObject, (err)=>{
-      if(err) throw err;
-      console.log("Insert success");
-  })
-  dboper.selectTuple("user", dataObject, (err, result)=>{
-    if(err) throw(err)
-    console.log(result)
-  })
-  dboper.updateTuple("user", dataObject, (err,result)=>{
-    if(err) {throw err};
-    console.log(result);
-  })
-  dboper.deleteTuple("user", dataObject, (err,result)=>{
-    if(err) {throw err};
-    console.log(result)
-  })
-  */
+/* 
+SAMPLES WITH USING CALLBACKS 
+db.insertTuple('test', dataObject, (err, result)=>{
+  if(err) return console.log(err.message)
+  console.log(result)
+})
+db.selectTuple('test', {
+  whereObject:{
+    name: "Oliver Queen"
+  },
+  attributeList: ['id', 'love', 'city'],
+  orderList: ['id'],
+  desc: true
+}, (err, result)=>{
+  if(err) return console.log(err.message)
+  console.log(result)
+})
+db.updateTuple('test', {
+  whereObject:{
+    id: 3,
+    name: "Oliver Queen"
+  },
+  valueObject:{
+    name: "Barry Allen",
+    city: "Central City"
+  }
+}, (err, result)=>{
+  if(err) return console.log(err.message)
+  console.log(result)
+})
+db.deleteTuple('test', {
+  whereObject:{
+    age: 30
+  }
+}, (err, result)=>{
+  if(err) return console.log(err.message)
+  console.log(result)
+})
+*/

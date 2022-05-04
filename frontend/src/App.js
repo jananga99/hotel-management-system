@@ -102,9 +102,9 @@ class App extends React.Component {
               <Home UserStore={UserStore} url={window.location.href} doLogout={this.doLogout} />
               <Router>
                 <Routes>
-                  <Route path='/book/hotels' element={<BookingAllHotels />} />
-                  <Route path='/book/hotel/:hotelID' element={<BookingHotel />} />
-                  <Route path='/book/book/:roomID' element={<Booking />} />
+                  <Route path='/' element={<BookingAllHotels />} />
+                  <Route path='/hotel/:hotelID' element={<BookingHotel />} />
+                  <Route path='/room/:roomID' element={<Booking />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Router>

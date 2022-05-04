@@ -1,0 +1,22 @@
+.hotel-card {
+    flex-direction: row;
+    align-items: center;
+}
+
+.hotel-card img {
+    width: 30%;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: calc(0.25rem - 1px);
+}
+
+.hotel-card .card-title {
+    font-weight: bold;
+}
+
+
+
+@media only screen and (max-width: 600px) {
+    .hotel-card img {
+      width: 60%;
+    }
+  }
