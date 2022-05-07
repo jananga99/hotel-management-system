@@ -24,19 +24,19 @@ app.use(bodyparser.urlencoded({extended: true}))
 //  }
  app.use(cors()) 
 
-// const db = mysql.createConnection({
-//     host: process.env.DATABASE_HOST,
-//     user: process.env.DATABASE_USER,
-//     password: process.env.DATABASE_PASS,
-//     database: process.env.DATABASE_NAME,
-// });
-
 const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "hotel_booking_system"
+    host: process.env.DATABASE_HOST,
+    user: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASS,
+    database: process.env.DATABASE_NAME,
 });
+
+// const db = mysql.createConnection({
+//     host: "localhost",
+//     user: "root",
+//     password: "",
+//     database: "hotel_booking_system"
+// });
 
 db.connect(function(err){
     if(err) {

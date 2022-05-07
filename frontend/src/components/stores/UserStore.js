@@ -1,15 +1,14 @@
-import { makeObservable, observable, action } from 'mobx';
+import { makeObservable, observable, action, extendObservable } from 'mobx';
 
 
 class UserStore{
-    loading = false;
+    loading = true;
     isLoggedIn=false;
     first_name='';
     email='';
-    type=-1;
+    type=20;
 
     constructor(){
-
         makeObservable(this, {
             loading: observable,
             isLoggedIn: observable,
