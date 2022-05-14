@@ -27,15 +27,15 @@ create table IF NOT EXISTS room(
     name varchar(100) not null,
     num_of_people int not null,
     ac_or_non_ac enum('ac','non-ac') not null ,
+    price double not null,
     img varchar(200)
 );
 
 create table IF NOT EXISTS booking (
 	bookingID int primary key auto_increment,
-    userID int not null REFERENCES user(userID),
+    userID int REFERENCES user(userID),
     roomID int not null REFERENCES room(roomID),
-    state enum("finished", "ongoing") not null,
-    price double not null,
+    state enum("available", "cancelled", "ongoing") not null default "available",
     payment_made enum('1','0') not null default '0' 
 );
 

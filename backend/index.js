@@ -211,13 +211,13 @@ app.delete('/api/delete-user/:id', (req, res) => {
 
 // error handler
 app.use(function(err, req, res, next) {
-    /* For dev purposes only
+     //For dev purposes only
         res.end(err.message)
-    */
+    /*
     res.json({
         success: false,
         msg: 'An error occured, please try again'
-    });
+    });*/
     return;
 });
 

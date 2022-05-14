@@ -1,4 +1,5 @@
 const path = require('path');
+const HotelRoom = require('./HotelRoom');
 
 const db = require(path.resolve(__dirname, "database", "connection"))
 const dbHelper = require(path.resolve(__dirname, "database", "helper"))
@@ -37,13 +38,22 @@ class Hotel {
 
 
     /*
-        Returns all rooms in this hotel
+        Returns all rooms in this hotel (with available field)
     */
     getAllRoomsOfHotel(){
         return new Promise((resolve, reject)=>{
-            db.query("SELECT * FROM room where hotelID=?", [this.hotelID], (err, results)=>{
+            db.query("SELECT * FROM room where hotelID=?", [this.hotelID], (err, rooms)=>{
                 if(err) return reject(err)
-                resolve(JSON.parse(JSON.stringify(results)))
+                rooms = JSON.parse(JSON.stringify(rooms))
+                let ret = []
+                rooms.forEach(async(roomData) => {
+                    let room = new HotelRoom(roomData.roomID)
+                    try{
+                        roomData.available = await room.isAvialable()
+                        ret.push(roomData)
+                        if(ret.length===rooms.length)  resolve(ret)
+                    }catch(err){reject(err)}
+                });
             });
         })   
     }

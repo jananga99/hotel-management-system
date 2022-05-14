@@ -57,7 +57,7 @@ router.get('/hotel/:id', async (req,res,next)=>{
         let hotelDetails = await hotel.getHotelDetails();
         let rooms = await hotel.getAllRoomsOfHotel();
         res.json({success: true, hotelDetails, rooms});
-    }catch(err){next(err)}
+    }catch(err){throw err}
 })
 
 
@@ -76,7 +76,6 @@ router.get("/book/:roomId",async (req,res,next)=>{
 /* POST Book the room in hotel. */
 router.post("/book/:id",async(req,res,next)=>{
     let roomID = req.params.id
-  //  let userID = 20;   //TODO
     let userID = req.session.userID;
     let hotelRoom = new HotelRoom(roomID)
     try{
@@ -90,11 +89,10 @@ router.post("/book/:id",async(req,res,next)=>{
 /* POST unbook the room in hotel. */
 router.post("/unbook/:id",async(req,res,next)=>{
     let roomID = req.params.id
-   //  let userID = 20;   //TODO
     let userID = req.session.userID;
     let hotelRoom = new HotelRoom(roomID)
     try{
-        let result = await hotelRoom.unbook();
+        let result = await hotelRoom.cancelRoomForBooking();
         res.json({ success: true, msg: "Room unbooked", result })        
     }catch(err){next(err)}
 })
