@@ -1,6 +1,7 @@
 const path = require('path');
 
-const db = require(path.resolve(__dirname, "database", "operations.js"))
+const db = require(path.resolve(__dirname, "database", "connection"))
+const dbHelper = require(path.resolve(__dirname, "database", "helper"))
 
 class Hotel {
 
@@ -10,80 +11,105 @@ class Hotel {
 
 
     /*
-        Returns all hotels
+        Returns all hotels according to given parametres in dataObject
     */
-    static getAllHotels(dataObject, done){
-        db.selectTuple('hotel', dataObject, done)
+    static getAllHotels(dataObject){
+        let sql = "select * from hotel"
+        let where = 0;
+        if(dataObject && 'whereObject' in dataObject && Object.entries(dataObject.whereObject).length>0){
+            sql = sql + " where " + dbHelper.equalSequenceString(Object.keys(dataObject.whereObject));
+            where = 1;
+        };
+        if(dataObject && 'like' in dataObject && dataObject.like){
+            if(where==0)    sql = sql + " where "
+            else    sql = sql + " and "
+            sql = sql + dataObject.like.searchBy + ` like '%${dataObject.like.search}%' `;
+        }
+        let values = null;
+        if(where)   values = Object.values(dataObject.whereObject)
+        return new Promise((resolve, reject)=>{
+            db.query(sql, values, (err, results)=>{
+                if(err) return reject(err)
+                resolve(JSON.parse(JSON.stringify(results)))
+            });
+        })
     }
 
 
     /*
         Returns all rooms in this hotel
     */
-    getAllRoomsOfHotel(done){
-        let dataObject = {
-            whereObject: {
-                hotelID: this.hotelID
-            }
-        }
-        db.selectTuple('room', dataObject, done)
+    getAllRoomsOfHotel(){
+        return new Promise((resolve, reject)=>{
+            db.query("SELECT * FROM room where hotelID=?", [this.hotelID], (err, results)=>{
+                if(err) return reject(err)
+                resolve(JSON.parse(JSON.stringify(results)))
+            });
+        })   
     }
 
     
     /*
         Returns all data of this hotel from Hotel table.
     */
-    getHotelDetails(done){
-        db.selectTuple('hotel', {whereObject:{hotelID:this.hotelID}}, (err, hotels)=>{
-            if(err) return done(err)
-            if(hotels.length)   done(null, hotels[0])
-            else done(null, null)
-        })
+    getHotelDetails(){
+        return new Promise((resolve, reject)=>{
+            db.query("SELECT * FROM hotel where hotelID=?", [this.hotelID], (err, results)=>{
+                if(err) return reject(err)
+                resolve(JSON.parse(JSON.stringify(results))[0])
+            });
+        })   
     }
 
 
     /*
         Returns all cities in Hotel table without duplicates.
     */
-    static getAllCity(done){
-        db.selectTuple('hotel', {distinct:true, attributeList:['city']}, (err, result)=>{
-            if(err) return done(err)
-            let cities = []
-            result.forEach(element => {
-                cities.push(element.city)
+    static getAllCity(){
+        return new Promise((resolve, reject)=>{
+            db.query("SELECT city FROM hotel",(err, results)=>{
+                if(err) return reject(err)
+                let cities = []
+                JSON.parse(JSON.stringify(results)).forEach(element=>{
+                    cities.push(element.city)
+                })
+                resolve(cities)
             });
-            done(null, cities)
-        })
+        })        
     }
 
 
     /*
         Returns all street names in Hotel table without duplicates.
     */
-    static getAllStreetName(done){
-        db.selectTuple('hotel', {distinct:true, attributeList:['street_name']}, (err, result)=>{
-            if(err) return done(err)
-            let streetNames = []
-            result.forEach(element => {
-                streetNames.push(element.street_name)
+    static getAllStreetName(){
+        return new Promise((resolve, reject)=>{
+            db.query("SELECT street_name FROM hotel",(err, results)=>{
+                if(err) return reject(err)
+                let streetNames = []
+                JSON.parse(JSON.stringify(results)).forEach(element=>{
+                    streetNames.push(element.street_name)
+                })
+                resolve(streetNames)
             });
-            done(null, streetNames)
-        })
+        })  
     }
 
     
     /*
         Returns all street numbers in Hotel table without duplicates.
     */
-    static getAllStreetNumber(done){
-        db.selectTuple('hotel', {distinct:true, attributeList:['street_number']}, (err, result)=>{
-            if(err) return done(err)
-            let streetNumbers = []
-            result.forEach(element => {
-                streetNumbers.push(element.street_number)
+    static getAllStreetNumber(){
+        return new Promise((resolve, reject)=>{
+            db.query("SELECT street_number FROM hotel",(err, results)=>{
+                if(err) return reject(err)
+                let streetNumbers = []
+                JSON.parse(JSON.stringify(results)).forEach(element=>{
+                    streetNumbers.push(element.street_number)
+                })
+                resolve(streetNumbers)
             });
-            done(null, streetNumbers)
-        })
+        })  
     }
 
 

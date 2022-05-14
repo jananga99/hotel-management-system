@@ -1,6 +1,6 @@
 const path = require('path');
 
-const db = require(path.resolve(__dirname, "database", "operations.js"))
+const db = require(path.resolve(__dirname, "database", "connection"))
 
 const Booking = require(path.resolve(__dirname, "Booking"))
 
@@ -15,19 +15,13 @@ class HotelRoom {
     /*
         Returns all data of this hotel room from Room table.
     */    
-    getRoomDetails(done){
-        db.selectTuple('room', {
-            whereObject:{
-                roomID:this.roomID
-            }
-        }, (err, rooms)=>{
-            if(err) return done(err)
-            if(rooms.length){
-                rooms[0].price = this.price
-                done(null, rooms[0])
-            }   
-            else done(null, null)
-        })
+    getRoomDetails(){
+        return new Promise((resolve, reject)=>{
+            db.query("SELECT * FROM room where roomID=?", [this.roomID], (err, results)=>{
+                if(err) return reject(err)
+                resolve(JSON.parse(JSON.stringify(results))[0])
+            });
+        })  
     }
 
 
@@ -35,13 +29,12 @@ class HotelRoom {
         Returns 1 if room is available, 0 otherwise.
     */
     isAvailable(done){
-        db.selectTuple('room', {
-            whereObject: {roomID:this.roomID},
-            attributeList: ['available']
-        }, (err, result)=>{
-            if(err) return done(err)
-            done(null, result[0].available)
-        })
+        return new Promise((resolve, reject)=>{
+            db.query("SELECT available FROM room where roomID=?", [this.roomID], (err, results)=>{
+                if(err) return reject(err)
+                resolve(JSON.parse(JSON.stringify(results))[0])
+            });
+        })  
     }
 
 
@@ -49,14 +42,13 @@ class HotelRoom {
         Updates available to 0 and bookingID in room table.
         This represents room is booked. I.e. it is made to unavailable.
     */
-    setUnavailable(bookingID, done){
-        db.updateTuple('room', {
-            whereObject: {roomID: this.roomID},
-            valueObject: {
-                available: 0,
-                bookingID: bookingID
-            }
-        },done)
+    setUnavailable(bookingID){
+        return new Promise((resolve, reject)=>{
+            db.query("UPDATE room SET available=?, bookingID=? where roomID=?", [0, bookingID, this.roomID], (err, results)=>{
+                if(err) return reject(err)
+                resolve(true)
+            });
+        })  
     }
 
 
@@ -65,13 +57,12 @@ class HotelRoom {
         This represents room is freed. I.e. it is made to available.
     */
     setAvailable(done){
-        db.updateTuple('room', {
-            whereObject: {roomID: this.roomID},
-            valueObject: {
-                available: 1,
-                bookingID: 0
-            }
-        },done)
+        return new Promise((resolve, reject)=>{
+            db.query("UPDATE room SET available=?, bookingID=? available FROM room where roomID=?", [1, bookingID, this.roomID], (err, results)=>{
+                if(err) return reject(err)
+                resolve(true)
+            });
+        })  
     }
 
 
@@ -81,26 +72,24 @@ class HotelRoom {
         If room is not available, 0 is returned. (to represent it is booked.)
         Otherwise, it is booked and Booking object is returned.
     */
-    book(userID, done){
-        this.isAvailable((err, available)=>{
-            if(err) return done(err)
-            if(available){
-                let price = this.price;   //TODO
-                Booking.createBooking(userID, price, (err, booking)=>{
-                    if(err) return done(err)
-                    if(booking) {
-                        this.setUnavailable(booking.bookingID, (err, result)=>{
-                            if(err) return done(err)
-                            done(null, booking)
-                        })
+    book(userID){
+        return new Promise(async(resolve, reject)=>{
+            try{
+                let available = await this.isAvailable()
+                if(available){
+                    let price = this.price;   //TODO
+                    let booking = await Booking.createBooking(userID, price)
+                    if(booking){
+                        await this.setUnavailable(booking.bookingID)
+                        resolve(booking)
+                    }else{
+                        resolve(0)
                     }
-                    else    return done(null, 0)
-                })
-            }else{
-                done(null, 0)
-            }
+                }else{
+                    resolve(0)
+                }
+            }catch(err){reject(err)}
         })
-
     }
 
 
