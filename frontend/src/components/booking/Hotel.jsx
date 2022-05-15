@@ -8,7 +8,13 @@ const Hotel = (props) => {
     var {data, isPending, error} = useFetch(`http://localhost:3001/book/hotel/${hotelID}`)
     if(data){
         data.rooms.forEach(room => {
-            room.bookUrl = `/room/${room.roomID}`
+            if(room.available==1 || room.available==="Yes"){
+                room.bookUrl = `/room/${room.roomID}`
+                room.buttonText = "Book Room"
+            }else if(room.available==0 || room.available=="No"){
+                room.bookUrl = '#'
+                room.buttonText = 'Already Booked'
+            }
             if(room.available==1 || room.available==0){
                 room.available = room.available==1 ? "Yes" : "No"
             }
@@ -56,7 +62,7 @@ const Hotel = (props) => {
                                         <td><i className="fa fa-users"></i> {room.num_of_people} </td>
                                         <td> {room.ac_or_non_ac} </td>
                                         <td> {room.available} </td>
-                                        <td><Link className='btn btn-primary' to={room.bookUrl}>Book Room</Link></td>
+                                        <td><Link className='btn btn-primary' to={room.bookUrl}>{room.buttonText}</Link></td>
                                     </tr>
                                 ))}                                
                                 </tbody>

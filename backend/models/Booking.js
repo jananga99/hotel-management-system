@@ -1,6 +1,6 @@
 const path = require('path');
 
-const db = require(path.resolve(__dirname, "database", "operations.js"))
+const db = require(path.resolve(__dirname, "database", "connection.js"))
 
 
 class Booking{
@@ -13,14 +13,28 @@ class Booking{
     /*
         Inserts a new booking for userID and returns corresponding booking object.
     */
-    static createBooking(userID, price, done){
-        db.insertTuple('booking', {
-            userID: userID,
-            price: price
-        }, (err, result)=>{
-            if(err) return done(err)
-            if(result.insertId) done(null, new Booking(result.insertId))
-            else    done(null, null)
+    static createBooking(roomID){
+        return new Promise((resolve, reject)=>{
+            db.query("INSERT INTO booking (roomID) VALUES (?)", [roomID], (err, result)=>{
+                if(err) return reject(err)
+                if(result.insertId) return resolve(new Booking(result.insertId))
+                else    return resolve(null)
+            });
+        }) 
+    }
+
+
+    /*
+        Cancel Room Booking. 
+    */
+    cancelRoomBooking(){
+        return new Promise((resolve, reject)=>{
+            try{
+                db.query("UPDATE booking SET state=? WHERE bookingID=?",["cancelled", this.bookingID], (err, result)=>{
+                    if(err) return reject(err)
+                    resolve(true)
+                })
+            }catch(err){reject(err)}
         })
     }
 
@@ -28,11 +42,13 @@ class Booking{
     /*
         Updates payment_made in booking table.
     */
-    pay(done){
-        db.updateTuple('booking', {
-            whereObject: {bookingID:this.bookingID},
-            valueObject: {payment_made:1}
-        }, done)
+    pay(){
+        return new Promise((resolve, reject)=>{
+            db.query("UPDATE booking SET payment_made=? where bookingID=?", ['1', this.bookingID], (err, results)=>{
+                if(err) return reject(err)
+                resolve(true)
+            });
+        }) 
     }
 
 

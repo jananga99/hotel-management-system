@@ -1,10 +1,11 @@
 var path = require('path')
 var express = require('express');
 const Booking = require('../models/Booking');
+const { json } = require('express');
 var router = express.Router();
 
 /* Libs */
-const db = require(path.resolve(__dirname, ".." ,"models", "database", "operations.js"))
+const db = require(path.resolve(__dirname, ".." ,"models", "database", "connection"))
 
 /* Models */
 const Hotel = require(path.resolve(__dirname, "..","models", "Hotel"))
@@ -25,7 +26,7 @@ router.get('/', (req,res,next)=>{
     Also retuns all cities, street name and street numbers.
         (To use as options in drop down lists in filter section) 
 */
-router.get('/hotels', (req,res,next)=>{
+router.get('/hotels', async (req,res,next)=>{
     let dataObject = { whereObject: {}}
     if(req.query.name){
         dataObject.like = {
@@ -36,25 +37,13 @@ router.get('/hotels', (req,res,next)=>{
     if(req.query.city)  dataObject.whereObject.city = req.query.city
     if(req.query.street_number)  dataObject.whereObject.street_number = req.query.street_number
     if(req.query.street_name)  dataObject.whereObject.street_name = req.query.street_name
-    Hotel.getAllHotels(dataObject, (err, hotels)=>{
-        if(err) return next(err)
-        Hotel.getAllCity((err, cities)=>{
-            if(err) return next(err)
-            Hotel.getAllStreetName((err, streetNames)=>{
-                if(err) return next(err)
-                Hotel.getAllStreetNumber((err, streetNumbers)=>{
-                    if(err) return next(err)
-                    res.json({
-                        success: true,
-                        hotels,
-                        cities,
-                        streetNames,
-                        streetNumbers
-                    })
-                })
-            })
-        })
-    })
+    try{
+        let hotels = await Hotel.getAllHotels(dataObject)
+        let cities = await Hotel.getAllCity()
+        let streetNames = await Hotel.getAllStreetName()
+        let streetNumbers = await Hotel.getAllStreetNumber()
+            res.json({success: true, hotels, cities, streetNames, streetNumbers})
+    }catch(err){next(err)}
 });
 
 
@@ -62,87 +51,62 @@ router.get('/hotels', (req,res,next)=>{
     GET hotel details. 
     If there is no hotel for given id, null is sent.
 */
-router.get('/hotel/:id', (req,res,next)=>{
+router.get('/hotel/:id', async (req,res,next)=>{
     let hotel = new Hotel(req.params.id)
-    hotel.getHotelDetails((err, hotelDetails)=>{
-        if(err) return next(err)
-        hotel.getAllRoomsOfHotel((err, rooms)=>{
-            if(err) return next(err)
-            res.json({
-                success: true,
-                hotelDetails,
-                rooms
-            })
-        })
-    })
+    try{
+        let hotelDetails = await hotel.getHotelDetails();
+        let rooms = await hotel.getAllRoomsOfHotel();
+        res.json({success: true, hotelDetails, rooms});
+    }catch(err){throw err}
 })
 
 
 /* GET Book the room in hotel. */
-router.get("/book/:roomId",(req,res,next)=>{
+router.get("/book/:roomId",async (req,res,next)=>{
     let hotelRoom = new HotelRoom(req.params.roomId)
-    hotelRoom.getRoomDetails((err, roomDetails)=>{
-        if(err) return next(err)
+    try{
+        let roomDetails = await hotelRoom.getRoomDetails()
         let hotel = new Hotel(roomDetails.hotelID)
-        hotel.getHotelDetails((err, hotelDetails)=>{
-            if(err) return next(err)
-            res.json({
-                success: true,
-                hotelDetails,
-                roomDetails
-            })
-        })
-    })
+        let hotelDetails = await hotel.getHotelDetails()
+        res.json({success:true, hotelDetails, roomDetails})
+    }catch(err){next(err)}
 })
 
 
 /* POST Book the room in hotel. */
-router.post("/book/:id",(req,res,next)=>{
+router.post("/book/:id",async(req,res,next)=>{
     let roomID = req.params.id
-    let userID = 20;   //TODO
+    let userID = req.session.userID;
     let hotelRoom = new HotelRoom(roomID)
-    hotelRoom.book(userID, (err, booking)=>{
-        if(err) return next(err)
-        if(booking) res.json({
-            success: true,
-            booking,
-            msg: `Room is booked successfully. Booking Id is ${booking.bookingID}`
-        })
-        else    res.json({
-            success: true,
-            msg: "Room is already booked."
-        })
-    })
+    try{
+        let booking = await hotelRoom.book(userID);
+        if(booking) res.json({success: true, booking, msg: `Room is booked successfully. Booking Id is ${booking.bookingID}`})
+        else    res.json({success: true, msg: "Room is already booked."})        
+    }catch(err){next(err)}
 })
 
 
 /* POST unbook the room in hotel. */
-router.post("/unbook/:id",(req,res,next)=>{
+router.post("/unbook/:id",async(req,res,next)=>{
     let roomID = req.params.id
-    let userID = 20;   //TODO
+    let userID = req.session.userID;
     let hotelRoom = new HotelRoom(roomID)
-    hotelRoom.unbook((err, result)=>{
-        if(err) return next(err)
-        res.json({
-            success: true,
-            msg: "Room unbooked",
-            result
-        })
-    })
+    try{
+        let result = await hotelRoom.cancelRoomForBooking();
+        res.json({ success: true, msg: "Room unbooked", result })        
+    }catch(err){next(err)}
 })
 
 
 /* GET pay for the booking  */
-router.post('/pay/:bookingID', (req,res,next)=>{
+router.post('/pay/:bookingID', async (req,res,next)=>{
     let booking = new Booking(req.params.bookingID)
-    booking.pay((err, result)=>{
-        if(err) return next(err)
-        res.json({
-            success: true,
-            msg: "Paid for the room",
-            result
-        })
-    })
+    try{
+        let result = await booking.pay()
+        res.json({success: true, msg: "Paid for the room", result})
+    }catch(err){
+        next(err)
+    }
 })
 
 
