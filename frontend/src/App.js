@@ -77,7 +77,7 @@ class App extends React.Component {
           return(
           <div className='app row'>
             <div className='container col-md-8'>
-              <Home UserStore={UserStore} url={window.location.href} doLogout={this.doLogout} />
+              <Home UserStore={UserStore} url={window.location.href} doLogout={this.doLogout} type={0} />
               <Router>
                 <Routes>
                   <Route path="/" element={<AdminDashboard />} />
@@ -99,7 +99,7 @@ class App extends React.Component {
             
             <div className='app row'>
             <div className='container col-md-8'>
-              <Home UserStore={UserStore} url={window.location.href} doLogout={this.doLogout} />
+              <Home UserStore={UserStore} url={window.location.href} doLogout={this.doLogout} type={2} />
               <Router>
                 <Routes>
                   <Route path='/' element={<BookingAllHotels />} />
