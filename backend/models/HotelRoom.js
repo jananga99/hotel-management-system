@@ -23,11 +23,13 @@ class HotelRoom {
 
 
     /*
-        Returns all data of this hotel room from Room table.
-    */    
+        Returns all data of this hotel room from Hotel room table.
+        Return Values (if there are no errors):
+            JS Object containing all details regarding this room.
+    */   
     getRoomDetails(){
         return new Promise((resolve, reject)=>{
-            db.query("SELECT * FROM room where roomID=?", [this.roomID], async (err, results)=>{
+            db.query("SELECT * FROM room WHERE roomID=? LIMIT 1", [this.roomID], async (err, results)=>{
                 if(err) return reject(err)
                 if(results.length===0)  return resolve(false)
                 let roomData = JSON.parse(JSON.stringify(results))[0] 
@@ -40,7 +42,11 @@ class HotelRoom {
 
 
     /*
-        Returns true if room available, false otherwise
+        Returns true if this room available, false otherwise.
+        Gets current available Booking Id for ths room. If there is room is available. Otherwise not.
+        Return Values (if there are no errors):
+            true        boolean         If room is available
+            false       boolean         If room is unavailable
     */
     isAvialable(){
         return new Promise(async(resolve, reject)=>{
@@ -52,13 +58,16 @@ class HotelRoom {
         })
     }
 
+
     /*
         Returns the booking ID for this room correspoding to currently available booking.
-        Returns false if this room is unavailable. (I.e. there is no booking with available for this roomID)
+        Return Values (if there are no errors):
+            bookingID   int             If room is available
+            false       boolean         If room is unavailable
     */
     getCurrentAvailableBookingID(){
         return new Promise((resolve, reject)=>{
-            db.query("SELECT bookingID FROM booking where roomID=? and state=? LIMIT 1", [this.roomID, "available"], (err, results)=>{
+            db.query("SELECT bookingID FROM booking WHERE roomID=? AND state=? LIMIT 1", [this.roomID, "available"], (err, results)=>{
                 if(err) return reject(err)
                 let temp = JSON.parse(JSON.stringify(results))
                 if(temp.length>0)   resolve(temp[0])
@@ -70,11 +79,13 @@ class HotelRoom {
 
     /*
         Returns the booking ID for this room correspoding to currently ongoing booking.
-        Returns false if a booking is not ongoing. 
+        Return Values (if there are no errors):
+            bookingID   int             If room is Ongoing
+            false       boolean         If room is not Ongoing
     */
     getCurrentOngoingBookingID(){
         return new Promise((resolve, reject)=>{
-            db.query("SELECT bookingID FROM booking where roomID=? and state=? LIMIT 1", [this.roomID, "ongoing"], (err, results)=>{
+            db.query("SELECT bookingID FROM booking WHERE roomID=? AND state=? LIMIT 1", [this.roomID, "ongoing"], (err, results)=>{
                 if(err) return reject(err)
                 let temp = JSON.parse(JSON.stringify(results))
                 if(temp.length>0)   resolve(temp[0])
@@ -86,7 +97,9 @@ class HotelRoom {
 
     /*
         Make availables room for booking.
-            Creates an available booking for this roomId.
+            Creates an available booking for this roomId using static method of Booking class.
+        Return Values (if there are no errors):
+            true        boolean
     */
     availableRoomForBooking(){
         return new Promise(async(resolve, reject)=>{
@@ -101,6 +114,8 @@ class HotelRoom {
     /*
         Make this room is unavailable.
             Cancels the current available booking for this room.
+        Return Values (if there are no errors):
+            true        boolean
     */
     unavailableRoomForBooking(){
         return new Promise(async (resolve, reject)=>{
@@ -116,6 +131,8 @@ class HotelRoom {
 
     /*
         Cancels the current available booking for this room.
+        Return Values (if there are no errors):
+            true        boolean
     */
     cancelRoomForBooking(){
         return new Promise(async (resolve, reject)=>{
@@ -130,11 +147,13 @@ class HotelRoom {
 
     /*
         Books this hotel room.
-        If room is not available, return false. Otherwise return bookingID.
+        Return Values (if there are no errors):
+            bookingID       int         if this romm is awailabe and just booked
+            false           boolean     Romm is booked just before it is requested.
     */
     book(userID){
         return new Promise((resolve, reject)=>{
-            db.query("UPDATE booking SET userID=?,state=? WHERE roomID=? and state=?",[userID, "ongoing", this.roomID, "available"], async(err, result)=>{
+            db.query("UPDATE booking SET userID=?,state=? WHERE roomID=? AND state=?",[userID, "ongoing", this.roomID, "available"], async(err, result)=>{
                 if(err) return reject(err)
                 if(result.changedRows){
                     let bookingID = await this.getCurrentOngoingBookingID()

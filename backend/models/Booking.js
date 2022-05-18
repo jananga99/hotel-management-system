@@ -11,7 +11,12 @@ class Booking{
 
     
     /*
-        Inserts a new booking for userID and returns corresponding booking object.
+        Inserts a new booking for given roomID and returns corresponding booking object.
+        Passed parametres:
+            roomID  :   int         roomID to create booking.
+        Return Values (if there are no errors):
+            Booking Object          if inserting to booking table success.
+            null                    if insertion fails.
     */
     static createBooking(roomID){
         return new Promise((resolve, reject)=>{
@@ -25,7 +30,10 @@ class Booking{
 
 
     /*
-        Cancel Room Booking. 
+        Cancel Room Booking corresponding to this booking object. 
+        Updates state of booking row for this object's bookingID to 'cancelled'.
+        Return values (if there are no errors):
+            true        boolean         
     */
     cancelRoomBooking(){
         return new Promise((resolve, reject)=>{
@@ -40,7 +48,9 @@ class Booking{
 
 
     /*
-        Updates payment_made in booking table.
+        Updates payment_made to 1 in corresponding row to this object's bookingID.
+        Return values (if there are no errors):
+            true        boolean  
     */
     pay(){
         return new Promise((resolve, reject)=>{
