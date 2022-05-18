@@ -11,9 +11,11 @@ const Hotel = (props) => {
             if(room.available==1 || room.available==="Yes"){
                 room.bookUrl = `/room/${room.roomID}`
                 room.buttonText = "Book Room"
+                room.buttonColor = "#1c2470"
             }else if(room.available==0 || room.available=="No"){
                 room.bookUrl = '#'
                 room.buttonText = 'Already Booked'
+                room.buttonColor = "#a61622"
             }
             if(room.available==1 || room.available==0){
                 room.available = room.available==1 ? "Yes" : "No"
@@ -62,7 +64,7 @@ const Hotel = (props) => {
                                         <td><i className="fa fa-users"></i> {room.num_of_people} </td>
                                         <td> {room.ac_or_non_ac} </td>
                                         <td> {room.available} </td>
-                                        <td><Link className='btn btn-primary' to={room.bookUrl}>{room.buttonText}</Link></td>
+                                        <td><Link className='btn btn-primary' style={{backgroundColor:room.buttonColor}} to={room.bookUrl}>{room.buttonText}</Link></td>
                                     </tr>
                                 ))}                                
                                 </tbody>

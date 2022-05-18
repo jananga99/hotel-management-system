@@ -5,3 +5,10 @@ body{
 .all-hotels{
     background-color: #c3e0d5;
 }
+
+
+select{
+    color: white;
+    background-color: rgb(53, 63, 148);
+    padding: 5px;
+}

@@ -24,21 +24,31 @@ class BookHotelCard extends React.Component {
                         <img src="https://mdbootstrap.com/img/Photos/Horizontal/Food/8-col/img (5).jpg" className="img-fluid" />
                     </div>
                     <div className="card-body">
-                        <h5 className="card-title font-weight-bold"><a>{this.props.hotel.name}</a></h5>
-                        <p className="mb-2">{this.props.hotel.street_number} - {this.props.hotel.street_name}, {this.props.hotel.city}</p>
-                        <p className="mb-1">Room: {this.props.room.roomID}/{this.props.room.name}</p>
+                        <h3 className="card-title font-weight-bold"><a>{this.props.hotel.name}</a></h3>
+                        <p className="mb-2 address">{this.props.hotel.street_number} - {this.props.hotel.street_name}, {this.props.hotel.city}</p>
+                        <p className="mb-1 room">Room: {this.props.room.roomID}/{this.props.room.name}</p>
                         <div className="row mb-1">
-                            <div className='col-6'>
+                            <div className='col-6 people'>
                                 <i className="fa fa-users"></i>{this.props.room.num_of_people}
                             </div>
-                            <div className='col-6'>  
+                            <div className='col-6 ac'>  
                                 {this.props.room.ac_or_non_ac} 
                             </div>
                         </div>
-                        <p>${this.props.room.price}</p>
-                        <button id="confirmBooking" className="btn btn-info" style={{display:"none"}} onClick={this.props.bookFunc}>Confirm Booking</button>
-                        <p id="alreadyBooked" style={{display:"none"}} >Already Booked</p>    
-                        <p id="youBooked" style={{display:"none"}} >Booked by You!!!</p>
+                        <div className="row mb-1 price">
+                            <p>${this.props.room.price}</p>
+                        </div>
+                        <div className="row mb-1">
+                            <button id="confirmBooking" className="btn btn-info" style={{display:"none"}} onClick={this.props.bookFunc}>Confirm Booking</button>
+                        </div>
+                        <div className="row mb-1 bookText">
+                            <p id="alreadyBooked" style={{display:"none"}} >Already Booked</p>    
+                        </div>
+                        <div className="row mb-1 bookText">
+                            <p id="youBooked" style={{display:"none"}} >Booked by You!!!</p>
+                        </div>
+                        
+                        
                     </div>
                 </div>
             </section>
