@@ -79,7 +79,6 @@ const AllHotels = () => {
             <div style={{marginLeft:'10px'}}>
                 <div className="row mb-3">
                     <div className="col-sm-8 col-lg-3">
-                        <label for="filter" className="col-form-label">Filter</label>
                     </div>
                     <div className="col-sm-8 col-lg-3">
                         <select onChange={(e)=>setFilterCity(e.target.value)} >
