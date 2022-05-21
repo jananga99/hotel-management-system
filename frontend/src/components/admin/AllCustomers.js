@@ -47,7 +47,6 @@ const AllCustomers = () => {
                     <th>First name</th>
                     <th>Last name</th>
                     <th>Email</th>
-                    <th>Mobile</th>
                     <th>Type</th>
                     <th></th>
                     <th></th>

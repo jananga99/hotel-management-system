@@ -5,19 +5,20 @@ class Home extends React.Component {
 
     constructor(props) {
         super(props);
-        if(props.type===0){
-            this.state={
-                dashboard:'',
+        if (props.type === 0) {
+            this.state = {
+                dashboard: '',
                 allModerators: '',
                 createModerator: '',
-                allCustomer:'',
+                allCustomers: '',
+                createCustomer: '',
                 logout: '',
             }
-        }else if(props.type ===  1){
+        } else if (props.type === 1) {
             //Moderator states here
-        }else{
+        } else {
             this.state = {
-                allHotel:''
+                allHotel: ''
             }
         }
     }
@@ -28,48 +29,54 @@ class Home extends React.Component {
 
     initializeStates() {
 
-        if(this.props.type===0){
-            if(this.props.url === 'http://localhost:3000/') {
+        if (this.props.type === 0) {
+            if (this.props.url === 'http://localhost:3000/') {
                 this.setState({
                     dashboard: 'active',
                 });
-            }else if(this.props.url === 'http://localhost:3000/admin/all-customers') {
+            } else if (this.props.url === 'http://localhost:3000/admin/all-moderators') {
                 this.setState({
                     allModerators: 'active',
                 });
-            }else if(this.props.url === 'http://localhost:3000/admin/create-customers') {
+            } else if (this.props.url === 'http://localhost:3000/admin/create-moderator') {
                 this.setState({
                     createModerator: 'active',
                 });
-            }else if(this.props.url === 'http://localhost:3000/admin/customers'){
+            } else if (this.props.url === 'http://localhost:3000/admin/all-customers') {
                 this.setState({
-                    allCustomer: 'active',
+                    allCustomers: 'active',
+                });
+            } else if (this.props.url === 'http://localhost:3000/admin/create-customer') {
+                this.setState({
+                    createCustomer: 'active',
                 });
             }
-        }else if(this.props.type ===  1){
+        } else if (this.props.type === 1) {
             //Moderator states here
-        }else{
-           if(this.props.type === 'http://localhost:3000/'){
+        } else {
+            if (this.props.type === 'http://localhost:3000/') {
                 this.setState({
                     allHotel: 'active'
-                });              
-           }
+                });
+            }
         }
 
     }
 
     resetSelector(property, value) {
         value = value.trim();
-        if(this.props.type===0){
+        if (this.props.type === 0) {
             this.setState({
                 dashboard: '',
                 allModerators: '',
+                allCustomers: '',
                 createModerator: '',
+                createCustomer: '',
                 logout: '',
             });
-        }else if(this.props.type ===  1){
+        } else if (this.props.type === 1) {
             //Moderator states here
-        }else{
+        } else {
             this.setState({
                 allHotel: ''
             })
@@ -81,50 +88,53 @@ class Home extends React.Component {
 
 
 
-    render(){
-        if(this.props.type===0){
+    render() {
+        if (this.props.type === 0) {
             return (
                 <div className='Container-fluid mt-3'>
                     <ul className="nav nav-pills nav-fill">
-                        <li className="nav-item" onClick={()=>this.resetSelector('dashboard', 'active')}>
-                            <a className={"nav-link"+ " " + this.state.dashboard} aria-current="page" href="/">Dashboard</a>
+                        <li className="nav-item" onClick={() => this.resetSelector('dashboard', 'active')}>
+                            <a className={"nav-link" + " " + this.state.dashboard} aria-current="page" href="/">Dashboard</a>
                         </li>
-                        <li className="nav-item" onClick={()=>this.resetSelector('allModerators', 'active')}>
-                            <a className={"nav-link"+" "+this.state.allModerators} href="/admin/all-customers">All Moderators</a>
+                        <li className="nav-item" onClick={()=>this.resetSelector('allCustomers', 'active')}>
+                            <a className={"nav-link"+" "+this.state.allModerators} href="/admin/all-customers">All Customers</a>
                         </li>
-                        <li className="nav-item" onClick={()=>this.resetSelector('createModerator', 'active')}>
-                            <a className={"nav-link"+" "+this.state.createModerator} href="/admin/create-customers">Create Moderator</a>
+                        <li className="nav-item" onClick={() => this.resetSelector('allModerators', 'active')}>
+                            <a className={"nav-link" + " " + this.state.allModerators} href="/admin/all-moderators">All Moderators</a>
                         </li>
-                        <li className="nav-item" onClick={()=>this.resetSelector('allCustomer', 'active')}>
-                            <a className={"nav-link"+" "+this.state.createModerator} href="/admin/customers">Create Customers</a>
+                        <li className="nav-item" onClick={() => this.resetSelector('createModerator', 'active')}>
+                            <a className={"nav-link" + " " + this.state.createModerator} href="/admin/create-moderator">Create Moderator</a>
                         </li>
-                        <li className="nav-item" onClick={()=>this.resetSelector('logout', 'active')}>
-                            <div className={"nav-link pe-auto"+ " "+ this.state.logout} style={{cursor: "pointer"}} onClick={()=>this.props.doLogout()}>Logout</div>
+                        <li className="nav-item" onClick={()=>this.resetSelector('createCustomer', 'active')}>
+                            <a className={"nav-link"+" "+this.state.createModerator} href="/admin/create-customer">Create Customer</a>
+                        </li>
+                        <li className="nav-item" onClick={() => this.resetSelector('logout', 'active')}>
+                            <div className={"nav-link pe-auto" + " " + this.state.logout} style={{ cursor: "pointer" }} onClick={() => this.props.doLogout()}>Logout</div>
                         </li>
                     </ul>
                     <hr></hr>
-                Welcome {this.props.UserStore.first_name}
+                    Welcome {this.props.UserStore.first_name}
                 </ div>
             );
-        }else if(this.props.type ===  1){
+        } else if (this.props.type === 1) {
             //Moderator states here
-        }else{
+        } else {
             return (
                 <div className='Container-fluid mt-3'>
                     <ul className="nav nav-pills nav-fill">
-                        <li className="nav-item" onClick={()=>this.resetSelector('allHotel', 'active')}>
-                            <a className={"nav-link"+" "+this.state.allHotel} href="/">All Hotels</a>
+                        <li className="nav-item" onClick={() => this.resetSelector('allHotel', 'active')}>
+                            <a className={"nav-link" + " " + this.state.allHotel} href="/">All Hotels</a>
                         </li>
-                        <li className="nav-item" onClick={()=>this.resetSelector('logout', 'active')}>
-                            <div className={"nav-link pe-auto"+ " "+ this.state.logout} style={{cursor: "pointer"}} onClick={()=>this.props.doLogout()}>Logout</div>
+                        <li className="nav-item" onClick={() => this.resetSelector('logout', 'active')}>
+                            <div className={"nav-link pe-auto" + " " + this.state.logout} style={{ cursor: "pointer" }} onClick={() => this.props.doLogout()}>Logout</div>
                         </li>
                     </ul>
                     <hr></hr>
-                Welcome {this.props.UserStore.first_name}
+                    Welcome {this.props.UserStore.first_name}
                 </ div>
             );
         }
     }
 }
- 
+
 export default Home;
