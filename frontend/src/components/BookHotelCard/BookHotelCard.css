@@ -1,0 +1,37 @@
+.book-hotel-card{
+    background-color: #c2d1cb;
+}
+
+.price{
+    color: red;
+    font-size:xx-large;
+}
+
+.people{
+    color: black;
+    font-size: xx-large;
+}
+
+.ac{
+    color: blueviolet;
+    font-size: xx-large;
+}
+
+.address{
+    font-size: large;
+}
+
+.room{
+    font-size: large;
+}
+
+#confirmBooking{
+    padding: 10px;
+    width: 60%;
+    margin-left: 20%;
+}
+.bookText{
+    color: green;
+    font-size:xx-large;
+    text-align: center;
+}

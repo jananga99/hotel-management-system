@@ -11,6 +11,9 @@ import AllModerators from './components/admin/AllModerators';
 import AllCustomers from './components/admin/AllCustomers';
 import CreateModerator from './components/admin/CreateModerator';
 import CreateCustomer from './components/admin/CreateCustomer';
+import BookingAllHotels from './components/booking/AllHotels';
+import BookingHotel from './components/booking/Hotel';
+import Booking from './components/booking/Book';
 
 class App extends React.Component {
 
@@ -75,7 +78,7 @@ class App extends React.Component {
           return(
           <div className='app row'>
             <div className='container col-md-8'>
-              <Home UserStore={UserStore} url={window.location.href} doLogout={this.doLogout} />
+              <Home UserStore={UserStore} url={window.location.href} doLogout={this.doLogout} type={0} />
               <Router>
                 <Routes>
                   <Route path="/" element={<AdminDashboard />} />
@@ -95,7 +98,21 @@ class App extends React.Component {
           );
         }else{
           return(
-            <div>Insert Customer Component Here</div>
+            
+            <div className='app row'>
+            <div className='container col-md-8'>
+              <Home UserStore={UserStore} url={window.location.href} doLogout={this.doLogout} type={2} />
+              <Router>
+                <Routes>
+                  <Route path='/' element={<BookingAllHotels />} />
+                  <Route path='/hotel/:hotelID' element={<BookingHotel />} />
+                  <Route path='/room/:roomID' element={<Booking />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Router>
+            </div>
+          </div>
+
           );
         }
 
