@@ -210,7 +210,8 @@ app.delete('/api/delete-user/:id', (req, res) => {
 
 app.post('/api/register-customer', (req, res) => {
     const sql = "INSERT INTO user(first_name, last_name, email, password, mobile, type, status) VALUES (?,?,?,?,?,2,1)"
-    db.query(sql, [req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.mobile], (err, result) => {
+    const hash = bcrypt.hashSync(req.body.password, 9)
+    db.query(sql, [req.body.firstname, req.body.lastname, req.body.email, hash, req.body.mobile], (err, result) => {
         if (err) {
             console.log("ERROR WHEN ADDING AN USER(Customer): " + err)
             res.json({
