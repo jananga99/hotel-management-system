@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"
 
-const CreateModerator = () => {
+const CreateCustomer = () => {
 
     const [firstName, setfirstName] = useState('')
     const [lastName, setlastName] = useState('')
@@ -33,25 +33,25 @@ const CreateModerator = () => {
         }
         else {
             setisPending(true)
-            const moderatorData = { first_name: firstName, last_name: lastName, email, password, mobile }
+            const customerData = { first_name: firstName, last_name: lastName, email, password, mobile }
 
-            fetch('http://localhost:3001/api/create-moderator', {
+            fetch('http://localhost:3001/api/create-customer', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(moderatorData),
+                body: JSON.stringify(customerData),
             })
                 .then(response => {
                     if (!response.ok) throw Error("Could not fetch the data")
                     response.json()
                 })
                 .then(data => {
-                    console.log('Moderator created: ', data);
+                    console.log('customer created: ', data);
                     setisPending(false)
                     console.error('Success:', data)
                     setError('')
-                    navigate("/admin/all-moderators")
+                    navigate("/admin/all-customers")
                 })
                 .catch((error) => {
                     console.error('Error:', error);
@@ -70,7 +70,7 @@ const CreateModerator = () => {
                 </div>
             }
 
-            <h3> Create moderator </h3>
+            <h3> Create customer </h3>
             <div className="container">
                 <form onSubmit={(e) => handleSubmit(e)}>
                     <div className="row mb-3">
@@ -109,12 +109,12 @@ const CreateModerator = () => {
                         </div>
                     </div>
 
-                    <button type="submit" className="btn btn-primary">Create Moderator</button>
+                    <button type="submit" className="btn btn-primary">Create Customer</button>
                 </form>
-                {isPending && <p> Adding moderator...</p>}
+                {isPending && <p> Adding customer...</p>}
             </div>
         </>
     );
 }
 
-export default CreateModerator;
+export default CreateCustomer;

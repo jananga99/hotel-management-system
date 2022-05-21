@@ -38,6 +38,7 @@ class EditOverlay extends React.Component {
                 let result = await res.json();
                 if(result && result.success) {
                     alert("Successfully Updated")
+                    window.location.reload(false);
                 }else {
                     alert("Data didn't modify completely. Refresh and try again");
                 }
