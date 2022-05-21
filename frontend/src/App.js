@@ -14,6 +14,7 @@ import CreateCustomer from './components/admin/CreateCustomer';
 import BookingAllHotels from './components/booking/AllHotels';
 import BookingHotel from './components/booking/Hotel';
 import Booking from './components/booking/Book';
+import SignupForm from './components/admin/SignupForm';
 
 class App extends React.Component {
 
@@ -86,6 +87,7 @@ class App extends React.Component {
                   <Route path="/admin/all-moderators" element={<AllModerators />} />
                   <Route path="/admin/create-customer" element={<CreateCustomer />} />
                   <Route path='/admin/create-moderator' element={<CreateModerator />} />
+                  <Route path='/signup' element={<SignupForm />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Router>
