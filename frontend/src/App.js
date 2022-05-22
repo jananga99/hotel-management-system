@@ -15,6 +15,7 @@ import BookingAllHotels from './components/booking/AllHotels';
 import BookingHotel from './components/booking/Hotel';
 import Booking from './components/booking/Book';
 import SignupForm from './components/admin/SignupForm';
+import Interface from './components/Interface';
 
 class App extends React.Component {
 
@@ -122,7 +123,14 @@ class App extends React.Component {
         return(
           <div className="app">
             <div className='container'>
-              <LoginForm />
+              <Interface />
+              <Router>
+                <Routes>
+                  <Route path='/' element={<LoginForm />} />
+                  <Route path='/signup' element={<SignupForm />} />
+                  <Route path="*" element={<LoginForm />} />
+                </Routes>
+              </Router>
             </div>
           </div>
         );

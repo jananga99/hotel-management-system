@@ -47,7 +47,7 @@ const SignupForm = () => {
 
     return (
         <>
-            <div className="container">
+            <div className="container mb-5">
 
                 <br /><h3>Signup</h3> <br />
                 <form className="form-horizontal" onSubmit={handleSubmit}>
@@ -104,9 +104,9 @@ const SignupForm = () => {
                     <div id="invalid-info">
 
                     </div> <br />
-                    <div className="form-group">
+                    <div className="form-group ml-5">
                         <div className="col-sm-offset-2 col-sm-10">
-                            <button type="submit" className="btn btn-default">Submit</button>
+                            <button type="submit" className="btn btn-secondary">Submit</button>
                         </div>
                     </div>
                     
