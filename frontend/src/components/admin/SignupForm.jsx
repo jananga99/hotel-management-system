@@ -1,8 +1,6 @@
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
 
 const SignupForm = () => {
-    const navigate = useNavigate()
 
     const [firstname, setfirstname] = useState("")
     const [lastname, setlastname] = useState("")
@@ -37,7 +35,7 @@ const SignupForm = () => {
                 .then(response => response.json())
                 .then(data => {
                     console.log("YAYYY", data)
-                    navigate("/")
+                    
                 })
                 .catch(err => {
                     console.log("NAYY", err);

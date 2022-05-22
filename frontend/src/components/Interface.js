@@ -1,20 +1,24 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import LoginForm from './LoginForm';
+import SignupForm from './admin/SignupForm';
 
 class Interface extends React.Component {
 
     constructor(props) {
         super(props);
-        if(window.location.href.includes('signup')){
-            this.state={
-                login:'',
-                signup:'active',
-            };
-        }else {
-            this.state={
-                login:'active',
-                signup:'',
-            };
+        // if(window.location.href.includes('signup')){
+        //     this.state={
+        //         login:'',
+        //         signup:'active',
+        //     };
+        // }else {
+        //     this.state={
+        //         login:'active',
+        //         signup:'',
+        //     };
+        // }
+        this.state = {
+            stateVar:props.state,
         }
     }
 
@@ -24,13 +28,16 @@ class Interface extends React.Component {
                 <div className="Container-fluid mt-5 mb-5">
                 <ul className="nav nav-pills nav-fill">
                     <li className="nav-item" >
-                        <a className={"nav-link "+this.state.login} aria-current="page" href="/">Login</a>
+                        <button className="nav-link" onClick={()=>this.setState({stateVar:0})}>Login</button>
                     </li>
                     <li className="nav-item">
-                        <a className={"nav-link "+this.state.signup} href="/signup">Signup</a>
+                        <button className="nav-link" onClick={()=>this.setState({stateVar:1})}>Signup</button>
                     </li>
                 </ul>
                 </div>
+                {this.state.stateVar === 0 &&
+                <LoginForm />}
+                {this.state.stateVar === 1 &&<SignupForm />}
             </>
         );
     }

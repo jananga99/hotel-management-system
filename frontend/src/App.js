@@ -123,14 +123,7 @@ class App extends React.Component {
         return(
           <div className="app">
             <div className='container'>
-              <Interface />
-              <Router>
-                <Routes>
-                  <Route path='/' element={<LoginForm />} />
-                  <Route path='/signup' element={<SignupForm />} />
-                  <Route path="*" element={<LoginForm />} />
-                </Routes>
-              </Router>
+              <Interface state={0}/>
             </div>
           </div>
         );
