@@ -119,7 +119,7 @@ class Home extends React.Component {
                             <a className={"nav-link" + " " + this.state.dashboard} aria-current="page" href="/">Dashboard</a>
                         </li>
                         <li className="nav-item" onClick={()=>this.resetSelector('allCustomers', 'active')}>
-                            <a className={"nav-link"+" "+this.state.allModerators} href="/admin/all-customers">All Customers</a>
+                            <a className={"nav-link"+" "+this.state.allCustomers} href="/admin/all-customers">All Customers</a>
                         </li>
                         <li className="nav-item" onClick={() => this.resetSelector('allModerators', 'active')}>
                             <a className={"nav-link" + " " + this.state.allModerators} href="/admin/all-moderators">All Moderators</a>
@@ -128,7 +128,7 @@ class Home extends React.Component {
                             <a className={"nav-link" + " " + this.state.createModerator} href="/admin/create-moderator">Create Moderator</a>
                         </li>
                         <li className="nav-item" onClick={()=>this.resetSelector('createCustomer', 'active')}>
-                            <a className={"nav-link"+" "+this.state.createModerator} href="/admin/create-customer">Create Customer</a>
+                            <a className={"nav-link"+" "+this.state.createCustomer} href="/admin/create-customer">Create Customer</a>
                         </li>
                         <li className="nav-item" onClick={() => this.resetSelector('logout', 'active')}>
                             <div className={"nav-link pe-auto" + " " + this.state.logout} style={{ cursor: "pointer" }} onClick={() => this.props.doLogout()}>Logout</div>

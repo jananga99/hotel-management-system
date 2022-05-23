@@ -17,6 +17,8 @@ import Booking from './components/booking/Book';
 import ModeratorDashboard from "./components/moderator/ModeratorDashboard";
 import AllRooms from './components/moderator/AllRooms';
 import CreateRoom from './components/moderator/CreateRoom';
+import SignupForm from './components/admin/SignupForm';
+import Interface from './components/Interface';
 
 class App extends React.Component {
 
@@ -89,6 +91,7 @@ class App extends React.Component {
                   <Route path="/admin/all-moderators" element={<AllModerators />} />
                   <Route path="/admin/create-customer" element={<CreateCustomer />} />
                   <Route path='/admin/create-moderator' element={<CreateModerator />} />
+                  <Route path='/signup' element={<SignupForm />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Router>
@@ -135,7 +138,7 @@ class App extends React.Component {
         return(
           <div className="app">
             <div className='container'>
-              <LoginForm />
+              <Interface state={0}/>
             </div>
           </div>
         );

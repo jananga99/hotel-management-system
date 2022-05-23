@@ -265,6 +265,24 @@ app.delete('/api/delete-room/:id', (req, res) => {
     })
 })
 
+app.post('/api/register-customer', (req, res) => {
+    const sql = "INSERT INTO user(first_name, last_name, email, password, mobile, type, status) VALUES (?,?,?,?,?,2,1)"
+    const hash = bcrypt.hashSync(req.body.password, 9)
+    db.query(sql, [req.body.firstname, req.body.lastname, req.body.email, hash, req.body.mobile], (err, result) => {
+        if (err) {
+            console.log("ERROR WHEN ADDING AN USER(Customer): " + err)
+            res.json({
+                success: false,
+                err
+            })
+        } else {
+            res.json({
+                success: true,
+                result
+            })
+        }
+    })
+})
 
 // error handler
 app.use(function(err, req, res, next) {
