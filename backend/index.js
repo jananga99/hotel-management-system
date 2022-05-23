@@ -107,6 +107,24 @@ app.get("/api/get-all-moderators", (req, res) => {
     })
 })
 
+app.get("/api/get-all-rooms", (req, res) => {
+    const sql = "SELECT * FROM room;"
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.log("ERROR WHEN FETCHING ROOMS: " + err)
+            res.json({
+                success: false,
+                err
+            })
+        } else {
+            res.json({
+                success: true,
+                result
+            })
+        }
+    })
+})
+
 app.post("/api/create-customer", (req, res) => {
     const {first_name, last_name, email, password, mobile} = req.body
     const hash = bcrypt.hashSync(password, 9)
@@ -137,6 +155,26 @@ app.post("/api/create-moderator", (req, res) => {
     db.query(sql, [first_name, last_name, email, hash, mobile], (err, result) => {
         if (err) {
             console.log("ERROR WHEN ADDING A MODERATOR: " + err)
+            res.json({
+                success: false,
+                err
+            })
+        } else {
+            res.json({
+                success: true,
+                result
+            })
+        }
+    })
+})
+
+app.post("/api/create-room", (req, res) => {
+    const {hotelID, name, num_of_people, ac_or_non_ac, price} = req.body
+    console.log({hotelID, name, num_of_people, ac_or_non_ac, price});
+    const sql = "INSERT INTO room VALUES (DEFAULT, ?, ?, ?, ?, ?, null);"
+    db.query(sql, [hotelID, name, num_of_people, ac_or_non_ac, price], (err, result) => {
+        if (err) {
+            console.log("ERROR WHEN ADDING A ROOM: " + err)
             res.json({
                 success: false,
                 err
@@ -195,6 +233,25 @@ app.delete('/api/delete-user/:id', (req, res) => {
     db.query(sql, [user_id], (err, result) => {
         if (err) {
             console.log("ERROR WHEN DELETING AN USER: " + err)
+            res.json({
+                success: false,
+                err
+            })
+        } else {
+            res.json({
+                success: true,
+                result
+            })
+        }
+    })
+})
+
+app.delete('/api/delete-room/:id', (req, res) => {
+    const roomID = req.params.id
+    const sql = "DELETE FROM room WHERE roomID=?"
+    db.query(sql, [roomID], (err, result) => {
+        if (err) {
+            console.log("ERROR WHEN DELETING AN ROOM: " + err)
             res.json({
                 success: false,
                 err
