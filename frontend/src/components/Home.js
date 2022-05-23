@@ -15,7 +15,12 @@ class Home extends React.Component {
                 logout: '',
             }
         } else if (props.type === 1) {
-            //Moderator states here
+            this.state = {
+                dashboard: '',
+                allRooms: '',
+                createRoom: '',
+                logout: '',
+            }
         } else {
             this.state = {
                 allHotel: ''
@@ -52,7 +57,19 @@ class Home extends React.Component {
                 });
             }
         } else if (this.props.type === 1) {
-            //Moderator states here
+            if (this.props.url === 'http://localhost:3000/') {
+                this.setState({
+                    dashboard: 'active',
+                });
+            } else if (this.props.url === 'http://localhost:3000/moderator/all-rooms') {
+                this.setState({
+                    allRooms: 'active',
+                });
+            } else if (this.props.url === 'http://localhost:3000/moderator/create-room') {
+                this.setState({
+                    createRoom: 'active',
+                });
+            }
         } else {
             if (this.props.type === 'http://localhost:3000/') {
                 this.setState({
@@ -75,7 +92,12 @@ class Home extends React.Component {
                 logout: '',
             });
         } else if (this.props.type === 1) {
-            //Moderator states here
+            this.state = {
+                dashboard: '',
+                allRooms: '',
+                createRoom: '',
+                logout: '',
+            }
         } else {
             this.setState({
                 allHotel: ''
@@ -117,7 +139,26 @@ class Home extends React.Component {
                 </ div>
             );
         } else if (this.props.type === 1) {
-            //Moderator states here
+            return (
+                <div className='Container-fluid mt-3'>
+                    <ul className="nav nav-pills nav-fill">
+                        <li className="nav-item" onClick={() => this.resetSelector('dashboard', 'active')}>
+                            <a className={"nav-link" + " " + this.state.dashboard} aria-current="page" href="/">Dashboard</a>
+                        </li>
+                        <li className="nav-item" onClick={()=>this.resetSelector('allRooms', 'active')}>
+                            <a className={"nav-link"+" "+this.state.allRooms} href="/moderator/all-rooms">All Rooms</a>
+                        </li>
+                        <li className="nav-item" onClick={()=>this.resetSelector('createRoom', 'active')}>
+                            <a className={"nav-link"+" "+this.state.createRoom} href="/moderator/create-room">Create Room</a>
+                        </li>
+                        <li className="nav-item" onClick={() => this.resetSelector('logout', 'active')}>
+                            <div className={"nav-link pe-auto" + " " + this.state.logout} style={{ cursor: "pointer" }} onClick={() => this.props.doLogout()}>Logout</div>
+                        </li>
+                    </ul>
+                    <hr></hr>
+                    Welcome {this.props.UserStore.first_name}
+                </ div>
+            );
         } else {
             return (
                 <div className='Container-fluid mt-3'>
