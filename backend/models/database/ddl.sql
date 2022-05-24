@@ -27,8 +27,7 @@ create table IF NOT EXISTS room(
     name varchar(100) not null,
     num_of_people int not null,
     ac_or_non_ac enum('ac','non-ac') not null ,
-    price double not null,
-    img varchar(200)
+    price double not null
 );
 
 create table IF NOT EXISTS booking (

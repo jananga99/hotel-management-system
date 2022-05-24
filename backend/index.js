@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const mysql = require('mysql');
+const fileUpload = require('express-fileupload');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session); 
 const Router = require('./routes/Router');
@@ -16,7 +17,8 @@ const bookingRouter = require('./routes/bookingRouter');
 app.use(express.json())
 // app.use(express.urlencoded({extended: false}))
 app.use(bodyparser.urlencoded({extended: true}))
-
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(fileUpload());
 // const corsOptions ={
 //     origin:'*', 
 //     credentials:true,            //access-control-allow-credentials:true
@@ -29,6 +31,7 @@ const db = mysql.createConnection({
     user: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASS,
     database: process.env.DATABASE_NAME,
+    port: process.env.DATABASE_PORT
 });
 
 // const db = mysql.createConnection({
