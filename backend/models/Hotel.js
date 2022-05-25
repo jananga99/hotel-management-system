@@ -59,9 +59,10 @@ class Hotel {
                     try{
                         roomData.available = await room.isAvialable()
                         ret.push(roomData)
-                        if(ret.length===rooms.length)  resolve(ret)
+                        if(ret.length===rooms.length)  return resolve(ret)
                     }catch(err){reject(err)}
                 });
+                if(rooms.length===0)    return resolve([])
             });
         })   
     }

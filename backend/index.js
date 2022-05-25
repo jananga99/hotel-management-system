@@ -11,6 +11,7 @@ const cors=require("cors");
 const bodyparser = require("body-parser")
 
 const bookingRouter = require('./routes/bookingRouter');
+const HotelRoom = require('./models/HotelRoom')
 
 //parse JSON using express
 app.use(express.json())
@@ -29,6 +30,7 @@ const db = mysql.createConnection({
     user: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASS,
     database: process.env.DATABASE_NAME,
+    port: process.env.DATABASE_PORT
 });
 
 // const db = mysql.createConnection({
@@ -171,8 +173,8 @@ app.post("/api/create-moderator", (req, res) => {
 app.post("/api/create-room", (req, res) => {
     const {hotelID, name, num_of_people, ac_or_non_ac, price} = req.body
     console.log({hotelID, name, num_of_people, ac_or_non_ac, price});
-    const sql = "INSERT INTO room VALUES (DEFAULT, ?, ?, ?, ?, ?, null);"
-    db.query(sql, [hotelID, name, num_of_people, ac_or_non_ac, price], (err, result) => {
+    const sql = "INSERT INTO room VALUES (DEFAULT, ?, ?, ?, ?, ?);"
+    db.query(sql, [hotelID, name, num_of_people, ac_or_non_ac, price], async (err, result) => {
         if (err) {
             console.log("ERROR WHEN ADDING A ROOM: " + err)
             res.json({
@@ -180,6 +182,16 @@ app.post("/api/create-room", (req, res) => {
                 err
             })
         } else {
+            try{
+                let new_room = new HotelRoom(result.insertId)
+                await new_room.availableRoomForBooking()    
+            }catch(err){
+                console.log("ERROR WHEN CREATING A BOOKING: " + err)
+                res.json({
+                    success: false,
+                    err
+                })
+            }
             res.json({
                 success: true,
                 result
@@ -286,13 +298,10 @@ app.post('/api/register-customer', (req, res) => {
 
 // error handler
 app.use(function(err, req, res, next) {
-     //For dev purposes only
-        res.end(err.message)
-    /*
     res.json({
         success: false,
         msg: 'An error occured, please try again'
-    });*/
+    });
     return;
 });
 
