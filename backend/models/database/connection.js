@@ -1,14 +1,5 @@
 const mysql = require('mysql');
 
-
-// const con = mysql.createConnection({
-//     host: "localhost",
-//     user: "root",
-//     password: "",
-//     database: "hotel_booking_system",
-//     port: 3306
-// });
-
 const con = mysql.createConnection({
     host: process.env.DATABASE_HOST,
     user: process.env.DATABASE_USER,

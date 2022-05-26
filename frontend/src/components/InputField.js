@@ -8,7 +8,7 @@ class InputField extends React.Component {
 
   render() {
     return (
-      <div className="inputField">
+      <div className={"inputField "+this.props.className}>
         <input 
           className='input'
           type = {this.props.type}

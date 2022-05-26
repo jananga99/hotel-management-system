@@ -76,15 +76,16 @@ class LoginForm extends React.Component {
     render() {
         return (
             <div className = 'loginform'>
-                Log In
+                <h3>Log In</h3>
                 <InputField 
                     type='text'
+                    className='mt-4 mb-3'
                     placeholder='Email'
                     value={this.state.email ? this.state.email : ''}
                     onChange = {(val)=> this.setInputValue('email', val)}
                 />
                 <InputField 
-                    type='text'
+                    type='password'
                     placeholder='password'
                     value={this.state.password ? this.state.password : ''}
                     onChange = {(val)=> this.setInputValue('password', val)}
@@ -92,6 +93,7 @@ class LoginForm extends React.Component {
 
                 <SubmitButton 
                     text='Login'
+                    className='btn btn-secondary mt-4'
                     disabled={this.state.buttonDisabled}
                     onClick={()=> this.doLogin()}
                 />

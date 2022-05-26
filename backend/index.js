@@ -11,6 +11,7 @@ const cors=require("cors");
 const bodyparser = require("body-parser")
 
 const bookingRouter = require('./routes/bookingRouter');
+const HotelRoom = require('./models/HotelRoom')
 
 //parse JSON using express
 app.use(express.json())
@@ -29,6 +30,7 @@ const db = mysql.createConnection({
     user: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASS,
     database: process.env.DATABASE_NAME,
+    port: process.env.DATABASE_PORT
 });
 
 // const db = mysql.createConnection({
@@ -107,6 +109,24 @@ app.get("/api/get-all-moderators", (req, res) => {
     })
 })
 
+app.get("/api/get-all-rooms", (req, res) => {
+    const sql = "SELECT * FROM room;"
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.log("ERROR WHEN FETCHING ROOMS: " + err)
+            res.json({
+                success: false,
+                err
+            })
+        } else {
+            res.json({
+                success: true,
+                result
+            })
+        }
+    })
+})
+
 app.post("/api/create-customer", (req, res) => {
     const {first_name, last_name, email, password, mobile} = req.body
     const hash = bcrypt.hashSync(password, 9)
@@ -142,6 +162,36 @@ app.post("/api/create-moderator", (req, res) => {
                 err
             })
         } else {
+            res.json({
+                success: true,
+                result
+            })
+        }
+    })
+})
+
+app.post("/api/create-room", (req, res) => {
+    const {hotelID, name, num_of_people, ac_or_non_ac, price} = req.body
+    console.log({hotelID, name, num_of_people, ac_or_non_ac, price});
+    const sql = "INSERT INTO room VALUES (DEFAULT, ?, ?, ?, ?, ?);"
+    db.query(sql, [hotelID, name, num_of_people, ac_or_non_ac, price], async (err, result) => {
+        if (err) {
+            console.log("ERROR WHEN ADDING A ROOM: " + err)
+            res.json({
+                success: false,
+                err
+            })
+        } else {
+            try{
+                let new_room = new HotelRoom(result.insertId)
+                await new_room.availableRoomForBooking()    
+            }catch(err){
+                console.log("ERROR WHEN CREATING A BOOKING: " + err)
+                res.json({
+                    success: false,
+                    err
+                })
+            }
             res.json({
                 success: true,
                 result
@@ -208,16 +258,50 @@ app.delete('/api/delete-user/:id', (req, res) => {
     })
 })
 
+app.delete('/api/delete-room/:id', (req, res) => {
+    const roomID = req.params.id
+    const sql = "DELETE FROM room WHERE roomID=?"
+    db.query(sql, [roomID], (err, result) => {
+        if (err) {
+            console.log("ERROR WHEN DELETING AN ROOM: " + err)
+            res.json({
+                success: false,
+                err
+            })
+        } else {
+            res.json({
+                success: true,
+                result
+            })
+        }
+    })
+})
+
+app.post('/api/register-customer', (req, res) => {
+    const sql = "INSERT INTO user(first_name, last_name, email, password, mobile, type, status) VALUES (?,?,?,?,?,2,1)"
+    const hash = bcrypt.hashSync(req.body.password, 9)
+    db.query(sql, [req.body.firstname, req.body.lastname, req.body.email, hash, req.body.mobile], (err, result) => {
+        if (err) {
+            console.log("ERROR WHEN ADDING AN USER(Customer): " + err)
+            res.json({
+                success: false,
+                err
+            })
+        } else {
+            res.json({
+                success: true,
+                result
+            })
+        }
+    })
+})
 
 // error handler
 app.use(function(err, req, res, next) {
-     //For dev purposes only
-        res.end(err.message)
-    /*
     res.json({
         success: false,
         msg: 'An error occured, please try again'
-    });*/
+    });
     return;
 });
 
