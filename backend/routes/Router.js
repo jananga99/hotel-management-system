@@ -8,6 +8,7 @@ class Router {
         this.isLoggedIn(app, db);
         this.modifyModerator(app, db);
         this.createModerator(app, db);
+        this.modifyRoom(app, db);
     }
 
     login(app , db) {
@@ -178,6 +179,58 @@ class Router {
         app.post('/createModerator',(req, res)=>{
             if(req.session.userID) {
                 
+            }
+        });
+    }
+
+    modifyRoom(app, db) {
+        app.post('/modifyRoom', (req, res) => {
+            if(req.session.userID) {
+                if(req.body.hotelID !== '' && req.body.hotelID >0){
+                    if(this.changeDatabase('UPDATE room set hotelID=? where roomID=?', [req.body.hotelID, req.body.roomID], db) === false){
+                        res.json({
+                            success: false,
+                        });
+                        return false;
+                    }
+                }
+                if(req.body.name !== '') {
+                    if(this.changeDatabase('UPDATE room set name=? where roomID=?', [req.body.name, req.body.roomID], db) === false){
+                        res.json({
+                            success: false,
+                        });
+                        return false;
+                    }
+                }
+                if(req.body.num_of_people !== '' && req.body.num_of_people >0) {
+                    if(this.changeDatabase('UPDATE room set num_of_people=? where roomID=?', [req.body.num_of_people, req.body.roomID], db) === false){
+                        res.json({
+                            success: false,
+                        });
+                        return false;
+                    }
+                }
+                if(req.body.ac_or_non_ac !== '') {
+                    if(this.changeDatabase('UPDATE room set ac_or_non_ac=? where roomID=?', [req.body.ac_or_non_ac, req.body.roomID], db) === false){
+                        res.json({
+                            success: false,
+                        });
+                        return false;
+                    }
+                }
+                if(req.body.price >0) {
+                    if(this.changeDatabase('UPDATE room set price=? where roomID=?', [req.body.price, req.body.roomID], db) === false){
+                        res.json({
+                            success: false,
+                        });
+                        return false;
+                    }
+                }
+
+                res.json({
+                    success: true,
+                });
+                return true;
             }
         });
     }
