@@ -5,16 +5,29 @@ import { Link } from 'react-router-dom';
 
 class SearchHotelCard extends React.Component {
     
+    
+
     render() {
+
+        const im = "http://localhost:3001/images/upload_images/"+this.props.hotel.img
+        const stars = []
+        for (let index = 0; index < this.props.hotel.star_rating; index++) {
+            stars.push(index)
+        }
         return(
       
 
         <div className="card search-hotel-card" >
-            <img src="https://codingyaar.com/wp-content/uploads/bootstrap-4-card-image-left-demo-image.jpg" className="card-img-top" alt="Hote Picture" />
+            <img src={im} className="card-img-top" alt="Hote Picture" />
             <div className='card-body'>
                 <h5 className="card-title">{this.props.hotel.name}</h5>
                 <p className="card-text"><i className="fa fa-road" aria-hidden="true"></i> {this.props.hotel.street_number}  {this.props.hotel.street_name}</p>
                 <p className="card-text"><i className="fa fa-building" aria-hidden="true"></i> {this.props.hotel.city} </p>
+                <p className='card-text'>
+                {stars.map(item => {
+                    return <i key={item} class="fa fa-star" aria-hidden="true" style={{color:'orange'}}></i>;
+                })}
+                </p>
                 <Link className='btn btn-primary' to={this.props.hotel.selectUrl}>Select Hotel</Link>
             </div>
         </div>
