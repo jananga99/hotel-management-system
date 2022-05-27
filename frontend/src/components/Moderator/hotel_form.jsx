@@ -36,7 +36,8 @@ function Hotel_Adding_form()  {
         city:city
       }).then(() =>{
         toast.success("Hotel Added");
-        navigate("/moderator/view-hotel")
+        setTimeout(() =>{navigate("/moderator/view-hotel");},2500);
+        
       })
     }
     };

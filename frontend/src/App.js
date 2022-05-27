@@ -143,10 +143,19 @@ class App extends React.Component {
                       path="/moderator/create-hotel"
                       element={<CreateHotel />}
                     />{" "}
+                      <Route
+                      path="/moderator/create-hotel/:id"
+                      element={<CreateHotel />}
+
+                    />{" "}
                     <Route
                       path="/moderator/view-hotel"
                       element={<ViewHotel />}
                     />{" "}
+                       {/* <Route
+                        path="/add/:id">
+              <Hotel_Adding_form/>
+            </Route> */}
                     <Route path="*" element={<NotFound />} />{" "}
                   </Routes>{" "}
                 </Router>{" "}

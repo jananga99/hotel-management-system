@@ -31,7 +31,8 @@ function Hotel_View() {
     console.log(id);
     if(window.confirm("Are you want to delete this hotel?")){
       Axios.delete(`http://localhost:3001/remove/${id}`);
-      toast.success("Hotel Deleted");
+      toast.info("Hotel Deleted");
+      setTimeout(() =>getHotel_details(),500)
      }
   };
 
@@ -71,7 +72,7 @@ function Hotel_View() {
               >
                 Delete
               </button>
-              <Link to={`/add/${val.hotelID}`}>
+              <Link to={`/moderator/create-hotel/${val.hotelID}`}>
               <button
                 // onClick={}
                 style={styles}
