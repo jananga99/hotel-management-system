@@ -18,6 +18,8 @@ create table IF NOT EXISTS hotel (
     street_number int not null,
     street_name varchar(100) not null,
     city varchar(100) not null,
+    star_rating varchar(100) not null,
+    facilities varchar(100) not null,
     img varchar(200)
 );
 

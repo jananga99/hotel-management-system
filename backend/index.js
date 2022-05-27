@@ -296,6 +296,57 @@ app.post('/api/register-customer', (req, res) => {
     })
 })
 
+app.post("/create", (req, res) => {
+    const name = req.body.name;
+    const star_rating = req.body.star_rating;
+    const facilities = req.body.facilities;
+    const street_number = req.body.street_number;
+    const street_name = req.body.street_name;
+    const city = req.body.city;
+    const img =  Math.floor((Math.random() * 10) + 1); + ".jpg"
+    db.query('INSERT INTO hotel (name,star_rating,facilities,street_number,street_name, city, img) VALUES (?,?,?,?,?,?,?)', [name, star_rating, facilities, street_number, street_name, city, img],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send("Hotel Inserted");
+            }
+        })
+});
+
+app.get("/hotels", (req, res) => {
+    db.query('SELECT * FROM hotel', (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    });
+});
+
+app.delete("/remove/:id", (req, res) => {
+    const id = req.params.id;
+    db.query('DELETE FROM hotel WHERE hotelID= ?', id, (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    });
+});
+
+app.put("/update/:id", (req, res) => {
+    const id = req.params.id;
+    db.query('UPDATE FROM hotel SET name=?,star_rating=?,facilities=?,street_number=?,street_name=?,city=? WHERE hotelID=?', [name, star_rating, facilities, street_number, street_name, city], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    });
+});
+
+
 // error handler
 app.use(function(err, req, res, next) {
     res.json({
