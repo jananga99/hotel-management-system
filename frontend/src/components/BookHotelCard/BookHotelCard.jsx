@@ -15,13 +15,22 @@ class BookHotelCard extends React.Component {
         }        
     }
     
+
+
     render() {
+        const im = "http://localhost:3001/images/upload_images/"+this.props.hotel.img
+        
+        const stars = []
+        for (let index = 0; index < this.props.hotel.star_rating; index++) {
+            stars.push(index)
+        }
+
         return(
             
             <section className="mx-auto my-5" style={{maxWidth: '23rem'}}>  
                 <div className="card book-hotel-card">
                     <div className="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                        <img src="https://mdbootstrap.com/img/Photos/Horizontal/Food/8-col/img (5).jpg" className="img-fluid" />
+                    <img src={im} className="img-fluid" />
                     </div>
                     <div className="card-body">
                         <h3 className="card-title font-weight-bold"><a>{this.props.hotel.name}</a></h3>
@@ -36,7 +45,16 @@ class BookHotelCard extends React.Component {
                             </div>
                         </div>
                         <div className="row mb-1 price">
-                            <p>${this.props.room.price}</p>
+                            <div className='col-6'>
+                                <p>${this.props.room.price}</p>
+                            </div>
+                            <div className='col-6'>
+                            <p className='card-text'>
+                                {stars.map(item => {
+                                    return <i key={item} class="fa fa-star" aria-hidden="true" style={{color:'orange'}}></i>;
+                                })}
+                            </p>
+                            </div>
                         </div>
                         <div className="row mb-1">
                             <button id="confirmBooking" className="btn btn-info" style={{display:"none"}} onClick={this.props.bookFunc}>Confirm Booking</button>

@@ -35,6 +35,7 @@ function Hotel_View() {
       toast.success("Hotel Deleted");
      }
   };
+
   return (
     <div>
       <Side_Bar callGetHotel={() => getHotel_details()} />
@@ -43,7 +44,7 @@ function Hotel_View() {
           <div className="card">
             <img
               id="image"
-              src={require("./images/112486687.jpg")}
+              src={"http://localhost:3001/images/upload_images/"+val.img}
               className="card-img-top"
               alt="..."
             />

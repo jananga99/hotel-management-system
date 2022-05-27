@@ -17,12 +17,12 @@ function Side_Bar(props) {
         {/* <div className="sidebar-header">User Settings</div> */}
         <ul className="list-unstyled components">
           <li className="navbar-item">
-            <Link to="/" className="nav-link" onClick={()=>props.callGetHotel()}>
+            <Link to="/moderator/view-hotel" className="nav-link" onClick={()=>props.callGetHotel()}>
               View Hotels
             </Link>
           </li>
           <li className="navbar-item">
-            <Link to="/add" className="nav-link" >
+            <Link to="/moderator/create-hotel" className="nav-link" >
               Add Hotels
             </Link>
           </li>
