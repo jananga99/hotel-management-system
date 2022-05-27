@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Axios from "axios";
-import Side_Bar from "./sideBar";
 import "./css/hotelview.css";
 import { Link } from "react-router-dom";
 
@@ -14,9 +13,9 @@ function Hotel_View() {
     setHotelList(responce.data);
     
   };
-  // useEffect(()=>{
-  //   getHotel_details();
-  // },[]);
+  useEffect(()=>{
+    getHotel_details();
+  },[]);
 
   // name, star_rating, facilities, street_number, street_name
   // <h2>{val.name}</h2>
@@ -38,7 +37,9 @@ function Hotel_View() {
 
   return (
     <div>
-      <Side_Bar callGetHotel={() => getHotel_details()} />
+       <ToastContainer position="top-center" />
+
+      {/* <Side_Bar callGetHotel={() => getHotel_details()} /> */}
       {hotelList.map((val, key) => {
         return (
           <div className="card">

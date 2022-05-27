@@ -4,9 +4,10 @@ import Hotel_View from './view_Hotel';
 import 'react-toastify/dist/ReactToastify.min.css';
 import {ToastContainer,toast} from 'react-toastify'
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
 
 function Hotel_Adding_form()  {
-
+  const navigate = useNavigate()
     const[name,setName]=useState("");
     const[star_rating,setStar_Rating]=useState("");
     const[facilities,setFacilities]=useState("");
@@ -35,12 +36,15 @@ function Hotel_Adding_form()  {
         city:city
       }).then(() =>{
         toast.success("Hotel Added");
+        navigate("/moderator/view-hotel")
       })
     }
     };
     return (
       <div>
-          <Hotel_View/>
+         <ToastContainer position="top-center" />
+
+          {/* <Hotel_View/> */}
           
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
