@@ -8,7 +8,7 @@ class SearchHotelCard extends React.Component {
     render() {
 
         const im = "http://localhost:3001/images/upload_images/"+this.props.hotel.img
-
+        console.log(im)
         return(
       
 
