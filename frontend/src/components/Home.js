@@ -19,6 +19,8 @@ class Home extends React.Component {
                 dashboard: '',
                 allRooms: '',
                 createRoom: '',
+                viewHotel: '',
+                createHotel: '',
                 logout: '',
             }
         } else {
@@ -69,6 +71,14 @@ class Home extends React.Component {
                 this.setState({
                     createRoom: 'active',
                 });
+            }else if (this.props.url === 'http://localhost:3000/moderator/create-hotel') {
+                this.setState({
+                    createHotel: 'active',
+                });
+            }else if (this.props.url === 'http://localhost:3000/moderator/view-hotel') {
+                this.setState({
+                    viewHotel: 'active',
+                });
             }
         } else {
             if (this.props.type === 'http://localhost:3000/') {
@@ -96,6 +106,8 @@ class Home extends React.Component {
                 dashboard: '',
                 allRooms: '',
                 createRoom: '',
+                createHotel: '',
+                viewHotel: '',
                 logout: '',
             }
         } else {
@@ -144,6 +156,11 @@ class Home extends React.Component {
                     <ul className="nav nav-pills nav-fill">
                         <li className="nav-item" onClick={() => this.resetSelector('dashboard', 'active')}>
                             <a className={"nav-link" + " " + this.state.dashboard} aria-current="page" href="/">Dashboard</a>
+                        </li>
+                        <li className="nav-item" onClick={()=>this.resetSelector('createHotel', 'active')}>
+                            <a className={"nav-link"+" "+this.state.createHotel} href="/moderator/create-Hotel">Create Hotel</a>
+                        </li><li className="nav-item" onClick={()=>this.resetSelector('viewHotel', 'active')}>
+                            <a className={"nav-link"+" "+this.state.allRooms} href="/moderator/view-hotel">View Hotel</a>
                         </li>
                         <li className="nav-item" onClick={()=>this.resetSelector('allRooms', 'active')}>
                             <a className={"nav-link"+" "+this.state.allRooms} href="/moderator/all-rooms">All Rooms</a>

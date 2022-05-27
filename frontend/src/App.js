@@ -17,6 +17,8 @@ import Booking from './components/booking/Book';
 import ModeratorDashboard from "./components/moderator/ModeratorDashboard";
 import AllRooms from './components/moderator/AllRooms';
 import CreateRoom from './components/moderator/CreateRoom';
+import CreateHotel from './components/Moderator/hotel_form';
+import ViewHotel from './components/Moderator/view_Hotel';
 import SignupForm from './components/admin/SignupForm';
 import Interface from './components/Interface';
 
@@ -108,6 +110,8 @@ class App extends React.Component {
                   <Route path="/" element={<ModeratorDashboard />} />
                   <Route path="/moderator/all-rooms" element={<AllRooms />} />
                   <Route path="/moderator/create-room" element={<CreateRoom />} />
+                  <Route path="/moderator/create-hotel" element={<CreateHotel />} />
+                  <Route path="/moderator/view-hotel" element={<ViewHotel />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Router>

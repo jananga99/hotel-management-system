@@ -12,6 +12,7 @@ function Hotel_Adding_form()  {
     const[facilities,setFacilities]=useState("");
     const [street_number,setStreet_Number]=useState("");
     const[street_name,setStreet_Name]=useState("");
+    const[city,setCity]=useState("");
     const{id}=useParams();
     // useEffect(() =>{
     //   Axios.get(http://localhost:3001/get/${id}).then((resp)=>)
@@ -31,6 +32,7 @@ function Hotel_Adding_form()  {
         facilities:facilities,
         street_number:street_number,
         street_name:street_name,
+        city:city
       }).then(() =>{
         toast.success("Hotel Added");
       })
@@ -61,11 +63,11 @@ function Hotel_Adding_form()  {
             Star Rating
           </label>
           <select value={star_rating} onChange={event=>setStar_Rating(event.target.value)} className="form-select" aria-label="Default select example">
-            <option >One Star</option>
-            <option >Two Star</option>
-            <option >Three Star</option>
-            <option >Four Star</option>
-            <option >Five Star</option>
+            <option value='1'>One Star</option>
+            <option  value='2'>Two Star</option>
+            <option  value='3'>Three Star</option>
+            <option  value='4'>Four Star</option>
+            <option  value='5'>Five Star</option>
           </select>
         </div>
         <div className="mb-3">
@@ -80,6 +82,20 @@ function Hotel_Adding_form()  {
             aria-describedby="facilitiesHelp"
           />
          
+        </div>
+        <div className="mb-3">
+          <label  className="form-label">
+            City
+          </label>
+          <input
+            type="text"
+            onChange={(event) => {setCity(event.target.value)}}
+
+            className="form-control"
+            id="city"
+            aria-describedby="s_number_Help"
+          />
+        
         </div>
         <div className="mb-3">
           <label  className="form-label">
