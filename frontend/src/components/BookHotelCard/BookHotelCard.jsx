@@ -16,12 +16,13 @@ class BookHotelCard extends React.Component {
     }
     
     render() {
+        const im = "http://localhost:3001/images/upload_images/"+this.props.hotel.img
         return(
             
             <section className="mx-auto my-5" style={{maxWidth: '23rem'}}>  
                 <div className="card book-hotel-card">
                     <div className="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                        <img src="https://mdbootstrap.com/img/Photos/Horizontal/Food/8-col/img (5).jpg" className="img-fluid" />
+                    <img src={im} className="img-fluid" />
                     </div>
                     <div className="card-body">
                         <h3 className="card-title font-weight-bold"><a>{this.props.hotel.name}</a></h3>

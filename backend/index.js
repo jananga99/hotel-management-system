@@ -17,7 +17,8 @@ const HotelRoom = require('./models/HotelRoom')
 app.use(express.json())
 // app.use(express.urlencoded({extended: false}))
 app.use(bodyparser.urlencoded({extended: true}))
-
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(fileUpload());
 // const corsOptions ={
 //     origin:'*', 
 //     credentials:true,            //access-control-allow-credentials:true
