@@ -19,11 +19,11 @@ class HotelCard extends React.Component {
             <img src={im} className="card-img-top" alt="Hote Picture" />
             <div className='card-body'>
                 <h5 className="card-title">{this.props.hotel.name}</h5>
-                <p className="card-text"><i class="fa fa-road" aria-hidden="true"></i> {this.props.hotel.street_number}  {this.props.hotel.street_name}</p>
-                <p className="card-text"><i class="fa fa-building" aria-hidden="true"></i> {this.props.hotel.city} </p>
+                <p className="card-text"><i className="fa fa-road" aria-hidden="true"></i> {this.props.hotel.street_number}  {this.props.hotel.street_name}</p>
+                <p className="card-text"><i className="fa fa-building" aria-hidden="true"></i> {this.props.hotel.city} </p>
                 <p className='card-text'>
                     {stars.map(item => {
-                        return <i key={item} class="fa fa-star" aria-hidden="true" style={{color:'orange'}}></i>;
+                        return <i key={item} className="fa fa-star" aria-hidden="true" style={{color:'orange'}}></i>;
                     })}
                 </p>
                 <p className="card-text"> {this.props.hotel.facilities} </p>

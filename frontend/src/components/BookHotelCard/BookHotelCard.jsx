@@ -51,7 +51,7 @@ class BookHotelCard extends React.Component {
                             <div className='col-6'>
                             <p className='card-text'>
                                 {stars.map(item => {
-                                    return <i key={item} class="fa fa-star" aria-hidden="true" style={{color:'orange'}}></i>;
+                                    return <i key={item} className="fa fa-star" aria-hidden="true" style={{color:'orange'}}></i>;
                                 })}
                             </p>
                             </div>
