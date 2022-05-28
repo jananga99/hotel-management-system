@@ -15,11 +15,11 @@ import CreateCustomer from "./components/admin/CreateCustomer";
 import BookingAllHotels from "./components/booking/AllHotels";
 import BookingHotel from "./components/booking/Hotel";
 import Booking from "./components/booking/Book";
-import ModeratorDashboard from "./components/Moderator/ModeratorDashboard";
-import AllRooms from "./components/Moderator/AllRooms";
-import CreateRoom from "./components/Moderator/CreateRoom";
-import CreateHotel from "./components/Moderator/hotel_form";
-import ViewHotel from "./components/Moderator/view_Hotel";
+import ModeratorDashboard from "./components/moderator/ModeratorDashboard";
+import AllRooms from "./components/moderator/AllRooms";
+import CreateRoom from "./components/moderator/CreateRoom";
+import CreateHotel from "./components/moderator/hotel_form";
+import ViewHotel from "./components/moderator/view_Hotel";
 import SignupForm from "./components/admin/SignupForm";
 import Interface from "./components/Interface";
 
