@@ -25,7 +25,7 @@ class SearchHotelCard extends React.Component {
                 <p className="card-text"><i className="fa fa-building" aria-hidden="true"></i> {this.props.hotel.city} </p>
                 <p className='card-text'>
                 {stars.map(item => {
-                    return <i key={item} class="fa fa-star" aria-hidden="true" style={{color:'orange'}}></i>;
+                    return <i key={item} className="fa fa-star" aria-hidden="true" style={{color:'orange'}}></i>;
                 })}
                 </p>
                 <Link className='btn btn-primary' to={this.props.hotel.selectUrl}>Select Hotel</Link>
