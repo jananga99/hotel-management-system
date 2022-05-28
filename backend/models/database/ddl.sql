@@ -1,5 +1,9 @@
 START TRANSACTION;
 
+CREATE DATABASE IF NOT EXISTS hotel_booking_system;
+
+USE hotel_booking_system;
+
 CREATE TABLE IF NOT EXISTS `user` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `first_name` varchar(255) NOT NULL,
