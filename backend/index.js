@@ -27,27 +27,33 @@ app.use(fileUpload());
 //  }
 app.use(cors());
 
-const db = mysql.createConnection({
-    host: process.env.DATABASE_HOST,
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASS,
-    database: process.env.DATABASE_NAME,
-    port: process.env.DATABASE_PORT
-});
+var db;
+function handleDisconnect() {
+    db = mysql.createConnection({
+        host: process.env.DATABASE_HOST,
+        user: process.env.DATABASE_USER,
+        password: process.env.DATABASE_PASS,
+        database: process.env.DATABASE_NAME,
+        port: process.env.DATABASE_PORT
+    });
 
-// const db = mysql.createConnection({
-//     host: "localhost",
-//     user: "root",
-//     password: "",
-//     database: "hotel_booking_system"
-// });
+    db.connect((err) => {
+        if(err) {
+            console.log('error when connecting to db: ', err);
+            setTimeout(handleDisconnect, 2000);
+        }
+    });
 
-db.connect(function(err){
-    if(err) {
-        console.log("DB ERROR");
-        throw err;
-    }
-});
+    db.on('error', (err)=>{
+        if(err.code === 'PROTOCOL_CONNECTION_LOST'){
+            handleDisconnect();
+        }else {
+            throw err;
+        }
+    });
+}
+
+handleDisconnect();
 
 const sessionStore = new MySQLStore({
     expiration : (365 * 60 * 60 * 24 * 1000),
