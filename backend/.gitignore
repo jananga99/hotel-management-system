@@ -1,4 +1,5 @@
 /build
 /node_modules
-
+test1.sql
+test2.txt
 .env

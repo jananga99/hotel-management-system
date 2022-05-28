@@ -6,7 +6,7 @@ const fileUpload = require('express-fileupload');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session); 
 const Router = require('./routes/Router');
-const bcrypt = require('bcrypt'); 
+const bcrypt = require('bcryptjs'); 
 require('dotenv').config();
 const cors=require("cors");
 const bodyparser = require("body-parser")
@@ -25,7 +25,7 @@ app.use(fileUpload());
 //     credentials:true,            //access-control-allow-credentials:true
 //     optionSuccessStatus:200,
 //  }
- app.use(cors()) 
+app.use(cors());
 
 const db = mysql.createConnection({
     host: process.env.DATABASE_HOST,
@@ -71,9 +71,13 @@ new Router(app, db);
 app.use('/book', bookingRouter);
 
 // app.listen(3001, '192.168.1.101');
-app.listen(3001, () => {
+app.listen(process.env.PORT || 3001, () => {
     console.log("Server is listening at port 3001");
 });
+// app.get('/',(req, res)=>{
+//     res.send("SUCCESS");
+// })
+
 
 app.get("/api/get-all-customers", (req, res) => {
     const sql = "SELECT * FROM user WHERE type=2;"
