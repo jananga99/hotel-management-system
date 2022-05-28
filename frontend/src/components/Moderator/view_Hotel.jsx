@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Axios from "axios";
-import Side_Bar from "./sideBar";
 import "./css/hotelview.css";
 import { Link } from "react-router-dom";
 
@@ -14,9 +13,9 @@ function Hotel_View() {
     setHotelList(responce.data);
     
   };
-  // useEffect(()=>{
-  //   getHotel_details();
-  // },[]);
+  useEffect(()=>{
+    getHotel_details();
+  },[]);
 
   // name, star_rating, facilities, street_number, street_name
   // <h2>{val.name}</h2>
@@ -32,18 +31,22 @@ function Hotel_View() {
     console.log(id);
     if(window.confirm("Are you want to delete this hotel?")){
       Axios.delete(`http://localhost:3001/remove/${id}`);
-      toast.success("Hotel Deleted");
+      toast.info("Hotel Deleted");
+      setTimeout(() =>getHotel_details(),500)
      }
   };
+
   return (
     <div>
-      <Side_Bar callGetHotel={() => getHotel_details()} />
+       <ToastContainer position="top-center" />
+
+      {/* <Side_Bar callGetHotel={() => getHotel_details()} /> */}
       {hotelList.map((val, key) => {
         return (
           <div className="card">
             <img
               id="image"
-              src={require("./images/112486687.jpg")}
+              src={"http://localhost:3001/images/upload_images/"+val.img}
               className="card-img-top"
               alt="..."
             />
@@ -69,7 +72,7 @@ function Hotel_View() {
               >
                 Delete
               </button>
-              <Link to={`/add/${val.hotelID}`}>
+              <Link to={`/moderator/create-hotel/${val.hotelID}`}>
               <button
                 // onClick={}
                 style={styles}

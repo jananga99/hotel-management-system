@@ -305,7 +305,7 @@ app.post("/create", (req, res) => {
     const street_number = req.body.street_number;
     const street_name = req.body.street_name;
     const city = req.body.city;
-    const img =  Math.floor((Math.random() * 10) + 1); + ".jpg"
+    const img =  Math.floor((Math.random() * 10) + 1) + ".jpg"
     db.query('INSERT INTO hotel (name,star_rating,facilities,street_number,street_name, city, img) VALUES (?,?,?,?,?,?,?)', [name, star_rating, facilities, street_number, street_name, city, img],
         (err, result) => {
             if (err) {
