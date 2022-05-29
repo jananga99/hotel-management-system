@@ -50,6 +50,7 @@ const AllHotels = () => {
     const renderSearchHotelCardRows = ()=>{
         let hotels = data.hotels;
         let finalArr = [], columns = [];
+        let j = 0;
         hotels.forEach((hotel, i)=>{
             columns.push(
                 <div key={i} className="col-md-12 col-lg-6">
@@ -57,12 +58,13 @@ const AllHotels = () => {
                 </div>
             );
             if((i+1)%2 === 0){
-                finalArr.push(<div className="row searchCards">{columns}</div>);
+                finalArr.push(<div key={i} className="row searchCards">{columns}</div>);
                 columns = [];
             }
+            j=i;
         });
         if(hotels.length%2===1){
-            finalArr.push(<div className="row searchCards">{columns}</div>);
+            finalArr.push(<div key={j} className="row searchCards">{columns}</div>);
         }
         return finalArr;
     }
@@ -81,26 +83,26 @@ const AllHotels = () => {
                     <div className="col-sm-8 col-lg-3">
                     </div>
                     <div className="col-sm-8 col-lg-3">
-                        <select onChange={(e)=>setFilterCity(e.target.value)} >
-                            <option value="byCity" selected>By City</option>
+                        <select defaultValue={"byCity"} onChange={(e)=>setFilterCity(e.target.value)} >
+                            <option value="byCity" >By City</option>
                             {data.cities.map(city => (
-                                <option value={city}>{city}</option>
+                                <option key={city} value={city}>{city}</option>
                             ))}
                         </select>
                     </div>
                     <div className="col-sm-8 col-lg-3">
-                        <select onChange={(e)=>setFilterStreetName(e.target.value)} >
-                            <option value="byStreetName" selected>By Street Name</option>
+                        <select defaultValue={"byStreetName"} onChange={(e)=>setFilterStreetName(e.target.value)} >
+                            <option value="byStreetName">By Street Name</option>
                             {data.streetNames.map(streetName => (
-                                <option value={streetName}>{streetName}</option>
+                                <option key={streetName} value={streetName}>{streetName}</option>
                             ))}
                         </select>
                     </div>
                     <div className="col-sm-8 col-lg-3">
-                        <select onChange={(e)=>setFilterStreetNumber(e.target.value)} >
-                            <option value="byStreetNumber" selected>By Street Number</option>
+                        <select defaultValue={"byStreetNumber"} onChange={(e)=>setFilterStreetNumber(e.target.value)} >
+                            <option value="byStreetNumber">By Street Number</option>
                             {data.streetNumbers.map(StreetNumber => (
-                                <option value={StreetNumber}>{StreetNumber}</option>
+                                <option key={StreetNumber} value={StreetNumber}>{StreetNumber}</option>
                             ))}
                         </select>
                     </div>

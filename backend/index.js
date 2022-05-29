@@ -6,7 +6,7 @@ const fileUpload = require('express-fileupload');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session); 
 const Router = require('./routes/Router');
-const bcrypt = require('bcrypt'); 
+const bcrypt = require('bcryptjs'); 
 require('dotenv').config();
 const cors=require("cors");
 const bodyparser = require("body-parser")
@@ -25,29 +25,35 @@ app.use(fileUpload());
 //     credentials:true,            //access-control-allow-credentials:true
 //     optionSuccessStatus:200,
 //  }
- app.use(cors()) 
+app.use(cors());
 
-const db = mysql.createConnection({
-    host: process.env.DATABASE_HOST,
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASS,
-    database: process.env.DATABASE_NAME,
-    port: process.env.DATABASE_PORT
-});
+var db;
+function handleDisconnect() {
+    db = mysql.createConnection({
+        host: process.env.DATABASE_HOST,
+        user: process.env.DATABASE_USER,
+        password: process.env.DATABASE_PASS,
+        database: process.env.DATABASE_NAME,
+        port: process.env.DATABASE_PORT
+    });
 
-// const db = mysql.createConnection({
-//     host: "localhost",
-//     user: "root",
-//     password: "",
-//     database: "hotel_booking_system"
-// });
+    db.connect((err) => {
+        if(err) {
+            console.log('error when connecting to db: ', err);
+            setTimeout(handleDisconnect, 2000);
+        }
+    });
 
-db.connect(function(err){
-    if(err) {
-        console.log("DB ERROR");
-        throw err;
-    }
-});
+    db.on('error', (err)=>{
+        if(err.code === 'PROTOCOL_CONNECTION_LOST'){
+            handleDisconnect();
+        }else {
+            throw err;
+        }
+    });
+}
+
+handleDisconnect();
 
 const sessionStore = new MySQLStore({
     expiration : (365 * 60 * 60 * 24 * 1000),
@@ -71,9 +77,13 @@ new Router(app, db);
 app.use('/book', bookingRouter);
 
 // app.listen(3001, '192.168.1.101');
-app.listen(3001, () => {
+app.listen(process.env.PORT || 3001, () => {
     console.log("Server is listening at port 3001");
 });
+// app.get('/',(req, res)=>{
+//     res.send("SUCCESS");
+// })
+
 
 app.get("/api/get-all-customers", (req, res) => {
     const sql = "SELECT * FROM user WHERE type=2;"

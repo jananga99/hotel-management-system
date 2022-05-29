@@ -158,9 +158,10 @@ class Home extends React.Component {
                             <a className={"nav-link" + " " + this.state.dashboard} aria-current="page" href="/">Dashboard</a>
                         </li>
                         <li className="nav-item" onClick={()=>this.resetSelector('createHotel', 'active')}>
-                            <a className={"nav-link"+" "+this.state.createHotel} href="/moderator/create-Hotel">Create Hotel</a>
-                        </li><li className="nav-item" onClick={()=>this.resetSelector('viewHotel', 'active')}>
-                            <a className={"nav-link"+" "+this.state.allRooms} href="/moderator/view-hotel">View Hotel</a>
+                            <a className={"nav-link"+" "+this.state.createHotel} href="/moderator/create-hotel">Create Hotel</a>
+                        </li>
+                        <li className="nav-item" onClick={()=>this.resetSelector('viewHotel', 'active')}>
+                            <a className={"nav-link"+" "+this.state.viewHotel} href="/moderator/view-hotel">View Hotel</a>
                         </li>
                         <li className="nav-item" onClick={()=>this.resetSelector('allRooms', 'active')}>
                             <a className={"nav-link"+" "+this.state.allRooms} href="/moderator/all-rooms">All Rooms</a>
