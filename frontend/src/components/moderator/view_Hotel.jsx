@@ -43,7 +43,7 @@ function Hotel_View() {
       {/* <Side_Bar callGetHotel={() => getHotel_details()} /> */}
       {hotelList.map((val, key) => {
         return (
-          <div className="card">
+          <div className="card" className="border border-danger" style={{margin:25}}>
             <img
               id="image"
               src={"http://localhost:3001/images/upload_images/"+val.img}
