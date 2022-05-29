@@ -18,6 +18,7 @@ import Booking from "./components/booking/Book";
 import ModeratorDashboard from "./components/moderator/ModeratorDashboard";
 import AllRooms from "./components/moderator/AllRooms";
 import CreateRoom from "./components/moderator/CreateRoom";
+import UpdateHotel from "./components/moderator/hotel_form_update";
 import CreateHotel from "./components/moderator/hotel_form";
 import ViewHotel from "./components/moderator/view_Hotel";
 import SignupForm from "./components/admin/SignupForm";
@@ -145,8 +146,7 @@ class App extends React.Component {
                     />{" "}
                       <Route
                       path="/moderator/create-hotel/:id"
-                      element={<CreateHotel />}
-
+                      element={<UpdateHotel />}
                     />{" "}
                     <Route
                       path="/moderator/view-hotel"
