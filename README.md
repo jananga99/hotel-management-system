@@ -2,10 +2,10 @@
 
 ## Requirements
 
-React Version: version 17
-Node Version: 16.x
-NPM Version: 6.14.13 or higher
-MySQL Version: 8.0.x
+React Version: version 17 <br>
+Node Version: 16.x <br>
+NPM Version: 6.14.13 or higher <br>
+MySQL Version: 8.0.x <br>
 
 ## Installing Dependencies
 
