@@ -2,27 +2,17 @@
 
 ## Requirements
 
-React Version: version 17 <br>
 Node Version: 16.x <br>
 NPM Version: 6.14.13 or higher <br>
-MySQL Version: 8.0.x <br>
 
 ## Installing Dependencies
 
 The system is built on Node server, React app and MySQL database, therefore these 3 main foremost tools need to be installed with specified version.
 
-### Installing Node.js
+### Installing Node.js and NPM
 
 Node run time environment is used to run the back-end server of the system and handle the HTTP request. Go to https://nodejs.org/en/download/ URL and download the specified Node.js installer suitable for you operating system and install it. When you install Node, it automatically installs NPM (Node Package Manager). If you want to install packages and dependencies using yarn, you are free to do that, but we recommend using NPM.
 To check the installation, go to the terminal and type node --version or node -v to check the version of the node environment installed and type npm --version or npm -v to check the packages manager version. If the NPM version is 5.2.0 or higher you are finished with Node.js installation but if you have installed an older version run npm install -g npm to install NPX (Node Package Executor) globally.
-
-### Installing React
-
-React is basically not a tool but a library, therefore we don’t have to install a separate tool for to run react on the browser. If you have installed NPM version 5.2.0 or higher you can run the node executor directly from the terminal.
-
-### Installing MySQL
-
-Go to https://dev.mysql.com/doc/mysql-installation-excerpt/8.0/en/ and install MySQL database which is compatible to you operating system. After installation open a terminal and type mysql --version to check the successful completion of the installation.
 
 ### Installing PM2
 
