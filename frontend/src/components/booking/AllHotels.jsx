@@ -13,10 +13,14 @@ const AllHotels = () => {
     const [filterStreetNumber, setFilterStreetNumber] = useState()
     var {data, isPending, error} = useFetch('http://localhost:3001/book/hotels')
     const [reRender, setreRender] = useState(false)  
-    if(data){
-        data.hotels.forEach(hotel => {
-            hotel.selectUrl = `/hotel/${hotel.hotelID}`
-        });
+    if(isPending){
+        var data = null
+    }else{
+        if(data){
+            data.hotels.forEach(hotel => {
+                hotel.selectUrl = `/hotel/${hotel.hotelID}`
+            });
+        }
     }
 
     useEffect(()=>{
@@ -73,7 +77,7 @@ const AllHotels = () => {
         <>
         {isPending && <p> Loading...</p>}
         {error && <p>ERROR OCCURED!! : {error} </p>}
-        {data && 
+        {!isPending && data && 
         <div className="container all-hotels">
             <div className="row">
                 <h2>All Hotels</h2>

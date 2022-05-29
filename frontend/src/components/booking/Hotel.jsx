@@ -6,28 +6,32 @@ import HotelCard from "../HotelCard/HotelCard";
 const Hotel = (props) => {
     let {hotelID} = useParams()
     var {data, isPending, error} = useFetch(`http://localhost:3001/book/hotel/${hotelID}`)
-    if(data){
-        data.rooms.forEach(room => {
-            if(room.available==1 || room.available==="Yes"){
-                room.bookUrl = `/room/${room.roomID}`
-                room.buttonText = "Book Room"
-                room.buttonColor = "#1c2470"
-            }else if(room.available==0 || room.available=="No"){
-                room.bookUrl = '#'
-                room.buttonText = 'Already Booked'
-                room.buttonColor = "#a61622"
-            }
-            if(room.available==1 || room.available==0){
-                room.available = room.available==1 ? "Yes" : "No"
-            }
-        });
+    if(isPending){
+        var data = null
+    }else{
+        if(data){
+            data.rooms.forEach(room => {
+                if(room.available==1 || room.available==="Yes"){
+                    room.bookUrl = `/room/${room.roomID}`
+                    room.buttonText = "Book Room"
+                    room.buttonColor = "#1c2470"
+                }else if(room.available==0 || room.available=="No"){
+                    room.bookUrl = '#'
+                    room.buttonText = 'Already Booked'
+                    room.buttonColor = "#a61622"
+                }
+                if(room.available==1 || room.available==0){
+                    room.available = room.available==1 ? "Yes" : "No"
+                }
+            });
+        }
     }
     return (
         <>
         
         {isPending && <p> Loading...</p>}
         {error && <p>ERROR OCCURED!! : {error} </p>}
-        {data && 
+        {!isPending && data && 
             
             <div className="container hotel">
 
