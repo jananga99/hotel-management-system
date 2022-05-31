@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Axios from "axios";
 import "./css/hotelview.css";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {faStar} from '@fortawesome/free-solid-svg-icons'
 
 import 'react-toastify/dist/ReactToastify.min.css';
 import axios from "axios";
@@ -27,6 +29,15 @@ function Hotel_View() {
     borderRadius: 30,
     fontWeight: "bold",
   };
+  const showStarCount =(count) =>{
+    var stars=[];
+    for(var i=0; i<count;i++){
+      stars.push(<span ><FontAwesomeIcon icon={faStar} style={{color:"orange"}} /></span>
+      );
+    }
+    return stars;
+
+  }
   const deleteHotel = (id) => {
     console.log(id);
     if(window.confirm("Are you want to delete this hotel?")){
@@ -54,14 +65,17 @@ function Hotel_View() {
             
               <h5 className="card-title" style={{ color: "red" }}>
                 {val.name}
+                {showStarCount(val.star_rating)}
                 
               </h5>
-              <p className="card-text">{val.facilities}</p>
+              <p className="card-text"  className="badge bg-primary text-wrap" style={{width: 100}}>{val.facilities}</p>
             </div>
             <ul className="list-group list-group-flush">
-              <li className="list-group-item">{val.star_rating}</li>
-              <li className="list-group-item">{val.street_number}</li>
-              <li className="list-group-item">{val.street_name}</li>
+              <li className="list-group-item">City : {val.city}</li>
+              
+
+              <li className="list-group-item">Street Number : {val.street_number}</li>
+              <li className="list-group-item">Street Name : {val.street_name}</li>
             </ul>
             <div className="card-body">
               <button
