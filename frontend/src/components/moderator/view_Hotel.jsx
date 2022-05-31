@@ -68,7 +68,7 @@ function Hotel_View() {
                 {showStarCount(val.star_rating)}
                 
               </h5>
-              <p className="card-text"  className="badge bg-primary text-wrap" style={{width: 100}}>{val.facilities}</p>
+              <p className="card-text"  className="badge bg-primary text-wrap" style={{width: 150}}>{val.facilities}</p>
             </div>
             <ul className="list-group list-group-flush">
               <li className="list-group-item">City : {val.city}</li>
