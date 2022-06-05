@@ -1,14 +1,14 @@
-const express = require('express'); 
+const express = require('express');
 const app = express();
 const path = require('path');
 const mysql = require('mysql');
 const fileUpload = require('express-fileupload');
 const session = require('express-session');
-const MySQLStore = require('express-mysql-session')(session); 
+const MySQLStore = require('express-mysql-session')(session);
 const Router = require('./routes/Router');
-const bcrypt = require('bcryptjs'); 
+const bcrypt = require('bcryptjs');
 require('dotenv').config();
-const cors=require("cors");
+const cors = require("cors");
 const bodyparser = require("body-parser")
 
 const bookingRouter = require('./routes/bookingRouter');
@@ -16,8 +16,8 @@ const HotelRoom = require('./models/HotelRoom')
 
 //parse JSON using express
 app.use(express.json())
-// app.use(express.urlencoded({extended: false}))
-app.use(bodyparser.urlencoded({extended: true}))
+    // app.use(express.urlencoded({extended: false}))
+app.use(bodyparser.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
 // const corsOptions ={
@@ -28,6 +28,7 @@ app.use(fileUpload());
 app.use(cors());
 
 var db;
+
 function handleDisconnect() {
     db = mysql.createConnection({
         host: process.env.DATABASE_HOST,
@@ -38,16 +39,16 @@ function handleDisconnect() {
     });
 
     db.connect((err) => {
-        if(err) {
+        if (err) {
             console.log('error when connecting to db: ', err);
             setTimeout(handleDisconnect, 2000);
         }
     });
 
-    db.on('error', (err)=>{
-        if(err.code === 'PROTOCOL_CONNECTION_LOST'){
+    db.on('error', (err) => {
+        if (err.code === 'PROTOCOL_CONNECTION_LOST') {
             handleDisconnect();
-        }else {
+        } else {
             throw err;
         }
     });
@@ -56,13 +57,13 @@ function handleDisconnect() {
 handleDisconnect();
 
 const sessionStore = new MySQLStore({
-    expiration : (365 * 60 * 60 * 24 * 1000),
+    expiration: (365 * 60 * 60 * 24 * 1000),
     endConnectionOnClose: false,
 }, db);
 
 app.use(session({
     key: 'fsasfsfafawfrhykuytjdafapsovapjv32fq',
-    secret: 'abc2idnoin2^*(doaiwu', 
+    secret: 'abc2idnoin2^*(doaiwu',
     store: sessionStore,
     resave: false,
     saveUninitialized: false,
@@ -140,7 +141,7 @@ app.get("/api/get-all-rooms", (req, res) => {
 })
 
 app.post("/api/create-customer", (req, res) => {
-    const {first_name, last_name, email, password, mobile} = req.body
+    const { first_name, last_name, email, password, mobile } = req.body
     const hash = bcrypt.hashSync(password, 9)
     const sql = "INSERT INTO user VALUES (DEFAULT, ?, ?, ?, ?, ?, 2, 1);"
     db.query(sql, [first_name, last_name, email, hash, mobile], (err, result) => {
@@ -163,7 +164,7 @@ app.post("/api/create-customer", (req, res) => {
 })
 
 app.post("/api/create-moderator", (req, res) => {
-    const {first_name, last_name, email, password, mobile} = req.body
+    const { first_name, last_name, email, password, mobile } = req.body
     const hash = bcrypt.hashSync(password, 9)
     const sql = "INSERT INTO user VALUES (DEFAULT, ?, ?, ?, ?, ?, 1, 1);"
     db.query(sql, [first_name, last_name, email, hash, mobile], (err, result) => {
@@ -183,10 +184,10 @@ app.post("/api/create-moderator", (req, res) => {
 })
 
 app.post("/api/create-room", (req, res) => {
-    const {hotelID, name, num_of_people, ac_or_non_ac, price} = req.body
-    console.log({hotelID, name, num_of_people, ac_or_non_ac, price});
+    const { hotelID, name, num_of_people, ac_or_non_ac, price } = req.body
+    console.log({ hotelID, name, num_of_people, ac_or_non_ac, price });
     const sql = "INSERT INTO room VALUES (DEFAULT, ?, ?, ?, ?, ?);"
-    db.query(sql, [hotelID, name, num_of_people, ac_or_non_ac, price], async (err, result) => {
+    db.query(sql, [hotelID, name, num_of_people, ac_or_non_ac, price], async(err, result) => {
         if (err) {
             console.log("ERROR WHEN ADDING A ROOM: " + err)
             res.json({
@@ -194,10 +195,10 @@ app.post("/api/create-room", (req, res) => {
                 err
             })
         } else {
-            try{
+            try {
                 let new_room = new HotelRoom(result.insertId)
-                await new_room.availableRoomForBooking()    
-            }catch(err){
+                await new_room.availableRoomForBooking()
+            } catch (err) {
                 console.log("ERROR WHEN CREATING A BOOKING: " + err)
                 res.json({
                     success: false,
@@ -232,7 +233,7 @@ app.get('/api/get-user-by-id/:id', (req, res) => {
 })
 
 app.put("/api/update-user", (req, res) => {
-    const {user_id, first_name, last_name, email, password, mobile, type, status} = req.body
+    const { user_id, first_name, last_name, email, password, mobile, type, status } = req.body
     const sql = "UPDATE user SET first_name=?, last_name=?, email=?, password=?, mobile=?, type=?, status=? WHERE user_id=?";
     const hash = bcrypt.hashSync(password, 9)
     db.query(sql, [first_name, last_name, email, hash, mobile, type, status, user_id], (err, result) => {
@@ -315,7 +316,7 @@ app.post("/create", (req, res) => {
     const street_number = req.body.street_number;
     const street_name = req.body.street_name;
     const city = req.body.city;
-    const img =  Math.floor((Math.random() * 10) + 1) + ".jpg"
+    const img = Math.floor((Math.random() * 10) + 1) + ".jpg"
     db.query('INSERT INTO hotel (name,star_rating,facilities,street_number,street_name, city, img) VALUES (?,?,?,?,?,?,?)', [name, star_rating, facilities, street_number, street_name, city, img],
         (err, result) => {
             if (err) {
@@ -335,6 +336,16 @@ app.get("/hotels", (req, res) => {
         }
     });
 });
+app.get("/hotel_fetch/:id", (req, res) => {
+    const id = req.params.id;
+    db.query('SELECT * FROM hotel WHERE hotelID =?', id, (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    });
+});
 
 app.delete("/remove/:id", (req, res) => {
     const id = req.params.id;
@@ -347,9 +358,11 @@ app.delete("/remove/:id", (req, res) => {
     });
 });
 
+
 app.put("/update/:id", (req, res) => {
     const id = req.params.id;
-    db.query('UPDATE FROM hotel SET name=?,star_rating=?,facilities=?,street_number=?,street_name=?,city=? WHERE hotelID=?', [name, star_rating, facilities, street_number, street_name, city], (err, result) => {
+    const { name, star_rating, facilities, street_number, street_name, city } = req.body
+    db.query('UPDATE hotel SET name=?,star_rating=?,facilities=?,street_number=?,street_name=?,city=? WHERE hotelID=?', [name, star_rating, facilities, street_number, street_name, city, id], (err, result) => {
         if (err) {
             console.log(err);
         } else {
